@@ -1,164 +1,230 @@
 "use client";
+import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
-const leagues = ["All", "Premier League", "LaLiga", "Champions League", "Bundesliga", "Serie A"];
+const matchData: Record<string, any> = {
+  "552092": { home: "PSG", away: "Bayern", league: "Champions League", date: "28 Apr 2025", venue: "Parc des Princes", city: "Paris" },
+  "552093": { home: "Atleti", away: "Arsenal", league: "Champions League", date: "29 Apr 2025", venue: "Metropolitano", city: "Madrid" },
+  "552095": { home: "Arsenal", away: "Atleti", league: "Champions League", date: "5 May 2025", venue: "Emirates", city: "London" },
+  "552094": { home: "Bayern", away: "PSG", league: "Champions League", date: "6 May 2025", venue: "Allianz Arena", city: "Munich" },
+};
 
-export default function Home() {
-  const [activeLeague, setActiveLeague] = useState("All");
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [matches, setMatches] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const flights = [
+  { airline: "Vueling", route: "MAD 07:15 — BCN 08:30", duration: "Direct · 1h 15m", returnFlight: "Return next day 22:00", price: 54, oldPrice: 72, badge: "Cheapest" },
+  { airline: "Iberia", route: "MAD 09:00 — BCN 10:10", duration: "Direct · 1h 10m", returnFlight: "Return next day 20:00", price: 78, oldPrice: 91, badge: "↓ 14%" },
+  { airline: "Ryanair", route: "MAD 06:00 — BCN 07:20", duration: "Direct · 1h 20m", returnFlight: "Return next day 08:00", price: 42, oldPrice: null, badge: "Early flight" },
+];
+
+const hotels = [
+  { name: "Ibis Centro", distance: "0.8km from stadium", details: "Free cancellation", price: 67, oldPrice: 89, badge: "Best value" },
+  { name: "NH Collection", distance: "0.3km from stadium", details: "Breakfast included · 2 left", price: 124, oldPrice: null, badge: "2 left" },
+  { name: "Marriott", distance: "1.2km from stadium", details: "Free cancellation · Parking", price: 98, oldPrice: 115, badge: null },
+];
+
+export default function MatchPage() {
+  const params = useParams();
   const router = useRouter();
+  const id = params.id as string;
+  const [activeTab, setActiveTab] = useState("trip");
+  const [alertPrice, setAlertPrice] = useState("80");
+  const [alertEmail, setAlertEmail] = useState("");
+  const [alertSet, setAlertSet] = useState(false);
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [loadingTickets, setLoadingTickets] = useState(true);
+
+  const match = matchData[id] || {
+    home: "Home Team", away: "Away Team",
+    league: "League", date: "TBC", venue: "TBC", city: "Europe"
+  };
 
   useEffect(() => {
-    fetch("/api/matches")
+    fetch(`/api/tickets?team=${encodeURIComponent(match.home)}`)
       .then(r => r.json())
-      .then(data => { setMatches(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
+      .then(data => { setTickets(Array.isArray(data) ? data.slice(0, 3) : []); setLoadingTickets(false); })
+      .catch(() => setLoadingTickets(false));
+  }, [match.home]);
 
-  const filtered = activeLeague === "All" ? matches : matches.filter(m => m.league === activeLeague);
-  const featured = filtered.filter(m => m.featured).slice(0, 2);
-  const rest = filtered.filter(m => !m.featured);
+  const ticketList = tickets.length > 0 ? tickets : [
+    { platform: "StubHub", section: "Category B — Tier 2", price: 89, oldPrice: 108, badge: "Best value", delivery: "E-ticket · Instant", url: "#" },
+    { platform: "Viagogo", section: "Category A — Tier 1", price: 215, oldPrice: null, badge: "3 left", delivery: "E-ticket · Instant", url: "#" },
+    { platform: "Ticketmaster", section: "VIP Hospitality", price: 490, oldPrice: null, badge: null, delivery: "Includes catering", url: "#" },
+  ];
+
+  const totalPrice = ticketList[0]?.price + flights[0].price + hotels[0].price * 2;
 
   return (
-    <main style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#080808", minHeight: "100vh", color: "#fff", overflowX: "hidden" }}>
+    <main style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif", background: "#080808", minHeight: "100vh", color: "#fff" }}>
 
-      <div style={{ position: "fixed", top: 0, left: "50%", transform: "translateX(-50%)", width: 800, height: 400, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(220,38,38,0.12) 0%, transparent 70%)" }} />
+      <div style={{ position: "fixed", top: 0, left: "50%", transform: "translateX(-50%)", width: 800, height: 400, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(220,38,38,0.1) 0%, transparent 70%)" }} />
 
       <nav style={{ position: "sticky", top: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 32px", background: "rgba(8,8,8,0.85)", backdropFilter: "blur(20px)", borderBottom: "0.5px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={() => router.push("/")}>
           <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg, #dc2626, #f97316)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>✈</div>
           <span style={{ fontWeight: 700, fontSize: 16, letterSpacing: -0.3 }}>FanTrip</span>
         </div>
-        <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
-          {["Tickets", "Travel", "Alerts"].map(l => (
-            <a key={l} href="#" style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, textDecoration: "none" }}>{l}</a>
-          ))}
+        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          <button onClick={() => router.push("/")} style={{ background: "rgba(255,255,255,0.06)", border: "0.5px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "7px 16px", fontSize: 12, color: "rgba(255,255,255,0.6)", cursor: "pointer" }}>← Back</button>
           <button style={{ background: "rgba(255,255,255,0.06)", border: "0.5px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "7px 16px", fontSize: 12, color: "rgba(255,255,255,0.6)", cursor: "pointer" }}>Sign up free</button>
         </div>
       </nav>
 
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <div style={{ textAlign: "center", padding: "72px 24px 48px" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(220,38,38,0.1)", border: "0.5px solid rgba(220,38,38,0.3)", borderRadius: 999, padding: "5px 14px", fontSize: 11, color: "#f87171", marginBottom: 28, fontWeight: 500, letterSpacing: 0.3 }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#dc2626", display: "inline-block" }} />
-            LIVE PRICES · 5 LEAGUES · REAL-TIME
-          </div>
-          <h1 style={{ fontSize: "clamp(38px, 6vw, 68px)", fontWeight: 800, lineHeight: 1.05, marginBottom: 20, letterSpacing: -2 }}>
-            Your match.<br />
-            <span style={{ background: "linear-gradient(90deg, #dc2626, #f97316, #fbbf24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Your trip. All sorted.</span>
-          </h1>
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 16, lineHeight: 1.7, marginBottom: 40, maxWidth: 460, margin: "0 auto 40px" }}>
-            Tickets, flights and hotels for any match in Europe.<br />One search. Best price. No switching tabs.
-          </p>
-          <div style={{ display: "flex", maxWidth: 580, margin: "0 auto 16px", background: "#111", border: "0.5px solid rgba(255,255,255,0.1)", borderRadius: 14, overflow: "hidden" }}>
-            <span style={{ padding: "0 16px", display: "flex", alignItems: "center", color: "#444", fontSize: 16 }}>🔍</span>
-            <input type="text" placeholder="Search team, match or competition..." style={{ flex: 1, padding: "16px 0", background: "transparent", border: "none", outline: "none", color: "#fff", fontSize: 14 }} />
-            <select style={{ background: "transparent", border: "none", outline: "none", borderLeft: "0.5px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.4)", fontSize: 12, padding: "0 14px", cursor: "pointer" }}>
-              {leagues.map(l => <option key={l} style={{ background: "#111" }}>{l}</option>)}
-            </select>
-            <button style={{ background: "linear-gradient(135deg, #dc2626, #f97316)", color: "#fff", border: "none", padding: "16px 24px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Search</button>
-          </div>
-          <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap" }}>
-            {["🔥 El Clasico", "🏆 UCL Final", "⚡ Manchester Derby", "🌟 North London Derby"].map(h => (
-              <button key={h} style={{ background: "rgba(255,255,255,0.04)", border: "0.5px solid rgba(255,255,255,0.08)", borderRadius: 999, padding: "6px 14px", fontSize: 12, color: "rgba(255,255,255,0.5)", cursor: "pointer" }}>{h}</button>
-            ))}
-          </div>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 760, margin: "0 auto", padding: "32px 24px 60px" }}>
+
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 11, color: "#f87171", fontWeight: 600, letterSpacing: 0.4, textTransform: "uppercase", marginBottom: 10 }}>{match.league}</div>
+          <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: -1, marginBottom: 6 }}>{match.home} <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 400 }}>vs</span> {match.away}</h1>
+          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)" }}>{match.date} · {match.venue}, {match.city}</div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", maxWidth: 560, margin: "0 auto 56px", background: "rgba(255,255,255,0.03)", border: "0.5px solid rgba(255,255,255,0.07)", borderRadius: 14, overflow: "hidden" }}>
-          {[{ num: "12,400+", label: "Matches tracked" }, { num: "3", label: "Platforms compared" }, { num: "89k", label: "Alerts sent" }, { num: "€28", label: "Avg saving/trip" }].map((s, i) => (
-            <div key={s.label} style={{ flex: 1, padding: "18px 16px", textAlign: "center", borderRight: i < 3 ? "0.5px solid rgba(255,255,255,0.07)" : "none" }}>
-              <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: -0.5 }}>{s.num}</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 3 }}>{s.label}</div>
-            </div>
+        <div style={{ background: "rgba(220,38,38,0.08)", border: "0.5px solid rgba(220,38,38,0.25)", borderRadius: 16, padding: "20px 24px", marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div>
+            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginBottom: 6 }}>Best combination · 1 person · 2 nights</div>
+            <div style={{ fontSize: 36, fontWeight: 800, letterSpacing: -1, marginBottom: 4 }}>{totalPrice}€</div>
+            <div style={{ fontSize: 13, color: "#4ade80" }}>Saves ~112€ vs booking separately</div>
+          </div>
+          <button style={{ background: "linear-gradient(135deg, #dc2626, #f97316)", color: "#fff", border: "none", borderRadius: 10, padding: "14px 28px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>Book this trip</button>
+        </div>
+
+        <div style={{ display: "flex", gap: 0, borderBottom: "0.5px solid rgba(255,255,255,0.08)", marginBottom: 24 }}>
+          {[["trip", "Full trip"], ["tickets", "Tickets only"], ["history", "Price history"], ["alerts", "Set alert — free"]].map(([id, label]) => (
+            <button key={id} onClick={() => setActiveTab(id)} style={{ padding: "10px 20px", fontSize: 13, background: "none", border: "none", borderBottom: activeTab === id ? "2px solid #dc2626" : "2px solid transparent", color: activeTab === id ? "#fff" : "rgba(255,255,255,0.4)", cursor: "pointer", fontWeight: activeTab === id ? 600 : 400, marginBottom: -1, transition: "all 0.15s" }}>{label}</button>
           ))}
         </div>
 
-        {loading ? (
-          <div style={{ textAlign: "center", padding: "60px 24px", color: "rgba(255,255,255,0.3)", fontSize: 14 }}>
-            Loading matches...
-          </div>
-        ) : (
-          <>
-            {featured.length > 0 && (
-              <div style={{ padding: "0 24px 20px", maxWidth: 760, margin: "0 auto" }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Featured matches</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                  {featured.map(m => (
-                    <div key={m.id} onClick={() => router.push(`/match/${m.id}`)}
-                      onMouseEnter={() => setHoveredId(m.id)}
-                      onMouseLeave={() => setHoveredId(null)}
-                      style={{ background: hoveredId === m.id ? "rgba(220,38,38,0.08)" : "rgba(255,255,255,0.03)", border: hoveredId === m.id ? "0.5px solid rgba(220,38,38,0.3)" : "0.5px solid rgba(255,255,255,0.07)", borderRadius: 16, padding: "22px 22px 18px", cursor: "pointer", transition: "all 0.2s", position: "relative", overflow: "hidden" }}>
-                      <div style={{ position: "absolute", top: -20, right: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(220,38,38,0.06)", pointerEvents: "none" }} />
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
-                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: 0.4, color: "#fbbf24", textTransform: "uppercase" }}>{m.league}</div>
-                        <span style={{ fontSize: 22 }}>{m.emoji}</span>
-                      </div>
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ fontSize: 18, fontWeight: 700, lineHeight: 1.2, marginBottom: 4 }}>{m.home}</div>
-                        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>vs {m.away}</div>
-                      </div>
-                      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginBottom: 16 }}>{m.date} · {m.venue}</div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderTop: "0.5px solid rgba(255,255,255,0.06)", paddingTop: 14 }}>
-                        <div>
-                          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginBottom: 2 }}>Ticket from</div>
-                          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                            <span style={{ fontSize: 24, fontWeight: 700 }}>{m.price}€</span>
-                            {m.drop && <span style={{ fontSize: 11, background: "rgba(74,222,128,0.1)", color: "#4ade80", padding: "2px 7px", borderRadius: 999, fontWeight: 600 }}>↓ {Math.abs(m.drop)}%</span>}
-                          </div>
-                        </div>
-                        <div style={{ textAlign: "right" }}>
-                          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginBottom: 2 }}>Full trip from</div>
-                          <div style={{ fontSize: 16, fontWeight: 600, color: "#fbbf24" }}>{m.tripFrom}€</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div style={{ padding: "24px 24px 0", maxWidth: 760, margin: "0 auto" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.1em" }}>All matches</span>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {leagues.map(l => (
-                    <button key={l} onClick={() => setActiveLeague(l)} style={{ background: activeLeague === l ? "rgba(220,38,38,0.15)" : "transparent", border: activeLeague === l ? "0.5px solid rgba(220,38,38,0.4)" : "0.5px solid rgba(255,255,255,0.08)", borderRadius: 999, padding: "4px 12px", fontSize: 11, color: activeLeague === l ? "#f87171" : "rgba(255,255,255,0.35)", cursor: "pointer", whiteSpace: "nowrap" }}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingBottom: 60 }}>
-                {rest.map(m => (
-                  <div key={m.id} onClick={() => router.push(`/match/${m.id}`)}
-                    onMouseEnter={() => setHoveredId(m.id)}
-                    onMouseLeave={() => setHoveredId(null)}
-                    style={{ background: hoveredId === m.id ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)", border: "0.5px solid rgba(255,255,255,0.07)", borderRadius: 12, padding: "14px 18px", display: "flex", alignItems: "center", gap: 16, cursor: "pointer", transition: "all 0.2s" }}>
-                    <div style={{ width: 42, height: 42, borderRadius: 10, background: "rgba(255,255,255,0.05)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{m.emoji}</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 3 }}>{m.home} <span style={{ color: "rgba(255,255,255,0.35)", fontWeight: 400 }}>vs</span> {m.away}</div>
-                      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>{m.date} · <span style={{ color: "rgba(255,255,255,0.45)" }}>{m.league}</span></div>
-                    </div>
-                    <div style={{ display: "flex", gap: 8, alignItems: "center", background: "rgba(255,255,255,0.03)", border: "0.5px solid rgba(255,255,255,0.06)", borderRadius: 8, padding: "6px 12px" }}>
-                      <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>🎟 + ✈ + 🏨</span>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>from {m.tripFrom}€</span>
-                    </div>
-                    <div style={{ textAlign: "right", flexShrink: 0, minWidth: 90 }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: 6, justifyContent: "flex-end" }}>
-                        <span style={{ fontSize: 16, fontWeight: 700 }}>{m.price}€</span>
-                        {m.drop ? <span style={{ fontSize: 10, background: "rgba(74,222,128,0.1)", color: "#4ade80", padding: "2px 6px", borderRadius: 999, fontWeight: 600 }}>↓{Math.abs(m.drop)}%</span>
-                          : <span style={{ fontSize: 10, background: "rgba(248,113,113,0.1)", color: "#f87171", padding: "2px 6px", borderRadius: 999, fontWeight: 600 }}>↑ Hot</span>}
-                      </div>
-                      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", marginTop: 2 }}>ticket only</div>
-                    </div>
+        {(activeTab === "trip" || activeTab === "tickets") && (
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "0.5px solid rgba(255,255,255,0.07)", borderRadius: 14, overflow: "hidden", marginBottom: 12 }}>
+            <div style={{ padding: "12px 18px", borderBottom: "0.5px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: "rgba(74,222,128,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>🎟</div>
+              <span style={{ fontSize: 13, fontWeight: 600 }}>Tickets</span>
+              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginLeft: "auto" }}>
+                {loadingTickets ? "Loading..." : `${ticketList.length} options · live prices`}
+              </span>
+            </div>
+            {ticketList.map((t, i) => (
+              <div key={i} style={{ padding: "14px 18px", borderBottom: i < ticketList.length - 1 ? "0.5px solid rgba(255,255,255,0.05)" : "none", display: "flex", alignItems: "center", gap: 14, background: i === 0 ? "rgba(74,222,128,0.03)" : "transparent" }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 3, display: "flex", alignItems: "center", gap: 8 }}>
+                    {t.section}
+                    {t.badge && <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 999, background: i === 0 ? "rgba(74,222,128,0.12)" : "rgba(248,113,113,0.12)", color: i === 0 ? "#4ade80" : "#f87171", fontWeight: 600 }}>{t.badge}</span>}
                   </div>
-                ))}
+                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>{t.platform} · {t.delivery}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 18, fontWeight: 700 }}>{t.price}€</div>
+                  {t.oldPrice && <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", textDecoration: "line-through" }}>{t.oldPrice}€</div>}
+                  <a href={t.url || "#"} target="_blank" rel="noopener noreferrer" style={{ marginTop: 6, padding: "5px 12px", fontSize: 11, background: "transparent", border: "0.5px solid rgba(255,255,255,0.15)", borderRadius: 7, color: "rgba(255,255,255,0.6)", cursor: "pointer", display: "inline-block", textDecoration: "none" }}>Buy on {t.platform}</a>
+                </div>
               </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === "trip" && (
+          <>
+            <div style={{ background: "rgba(255,255,255,0.02)", border: "0.5px solid rgba(255,255,255,0.07)", borderRadius: 14, overflow: "hidden", marginBottom: 12 }}>
+              <div style={{ padding: "12px 18px", borderBottom: "0.5px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 28, height: 28, borderRadius: 7, background: "rgba(96,165,250,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>✈️</div>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Flights to {match.city}</span>
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginLeft: "auto" }}>via Amadeus · coming soon</span>
+              </div>
+              {flights.map((f, i) => (
+                <div key={i} style={{ padding: "14px 18px", borderBottom: i < flights.length - 1 ? "0.5px solid rgba(255,255,255,0.05)" : "none", display: "flex", alignItems: "center", gap: 14, background: i === 0 ? "rgba(96,165,250,0.03)" : "transparent" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 3, display: "flex", alignItems: "center", gap: 8 }}>
+                      {f.airline} · {f.route}
+                      {f.badge && <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 999, background: i === 0 ? "rgba(96,165,250,0.12)" : "rgba(74,222,128,0.12)", color: i === 0 ? "#60a5fa" : "#4ade80", fontWeight: 600 }}>{f.badge}</span>}
+                    </div>
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>{f.duration} · {f.returnFlight}</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 18, fontWeight: 700 }}>{f.price}€</div>
+                    {f.oldPrice && <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", textDecoration: "line-through" }}>{f.oldPrice}€</div>}
+                    <button style={{ marginTop: 6, padding: "5px 12px", fontSize: 11, background: "transparent", border: "0.5px solid rgba(255,255,255,0.15)", borderRadius: 7, color: "rgba(255,255,255,0.6)", cursor: "pointer" }}>Book on Skyscanner</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ background: "rgba(255,255,255,0.02)", border: "0.5px solid rgba(255,255,255,0.07)", borderRadius: 14, overflow: "hidden", marginBottom: 24 }}>
+              <div style={{ padding: "12px 18px", borderBottom: "0.5px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 28, height: 28, borderRadius: 7, background: "rgba(251,191,36,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>🏨</div>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Hotels near {match.venue}</span>
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginLeft: "auto" }}>via Booking.com · coming soon</span>
+              </div>
+              {hotels.map((h, i) => (
+                <div key={i} style={{ padding: "14px 18px", borderBottom: i < hotels.length - 1 ? "0.5px solid rgba(255,255,255,0.05)" : "none", display: "flex", alignItems: "center", gap: 14, background: i === 0 ? "rgba(251,191,36,0.03)" : "transparent" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 3, display: "flex", alignItems: "center", gap: 8 }}>
+                      {h.name}
+                      {h.badge && <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 999, background: i === 0 ? "rgba(251,191,36,0.12)" : "rgba(248,113,113,0.12)", color: i === 0 ? "#fbbf24" : "#f87171", fontWeight: 600 }}>{h.badge}</span>}
+                    </div>
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>{h.distance} · {h.details}</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 18, fontWeight: 700 }}>{h.price}€<span style={{ fontSize: 11, fontWeight: 400, color: "rgba(255,255,255,0.4)" }}>/night</span></div>
+                    {h.oldPrice && <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", textDecoration: "line-through" }}>{h.oldPrice}€/night</div>}
+                    <button style={{ marginTop: 6, padding: "5px 12px", fontSize: 11, background: "transparent", border: "0.5px solid rgba(255,255,255,0.15)", borderRadius: 7, color: "rgba(255,255,255,0.6)", cursor: "pointer" }}>Book on Booking</button>
+                  </div>
+                </div>
+              ))}
             </div>
           </>
         )}
+
+        {activeTab === "history" && (
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "0.5px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: "20px 24px" }}>
+            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Ticket price history — last 4 weeks</div>
+            <svg width="100%" height="100" viewBox="0 0 600 100" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#dc2626" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#dc2626" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path d="M0,40 L75,35 L150,55 L225,60 L300,45 L375,70 L450,50 L525,28 L600,20" fill="none" stroke="#dc2626" strokeWidth="2" />
+              <path d="M0,40 L75,35 L150,55 L225,60 L300,45 L375,70 L450,50 L525,28 L600,20 L600,100 L0,100Z" fill="url(#g)" />
+              <circle cx="375" cy="70" r="5" fill="#4ade80" />
+              <rect x="340" y="76" width="70" height="18" rx="4" fill="rgba(74,222,128,0.15)" />
+              <text x="375" y="88" textAnchor="middle" fontSize="10" fill="#4ade80" fontFamily="sans-serif">min 89€</text>
+            </svg>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 8 }}>
+              <span>1 Apr</span><span>8 Apr</span><span>15 Apr</span><span>22 Apr</span><span>Today</span>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "alerts" && (
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "0.5px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: "24px" }}>
+            <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>Set a price alert — free</div>
+            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginBottom: 24, lineHeight: 1.6 }}>
+              Track tickets, flights and hotels for this match. We'll email you when any of them drops below your target price. Always free.
+            </div>
+            {alertSet ? (
+              <div style={{ background: "rgba(74,222,128,0.1)", border: "0.5px solid rgba(74,222,128,0.3)", borderRadius: 10, padding: "24px", textAlign: "center" }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>✅</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: "#4ade80", marginBottom: 6 }}>Alert set for {alertPrice}€</div>
+                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>We'll notify {alertEmail} when prices drop.</div>
+              </div>
+            ) : (
+              <>
+                <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 6 }}>Alert me when below</div>
+                    <input value={alertPrice} onChange={e => setAlertPrice(e.target.value)} style={{ width: "100%", padding: "10px 14px", background: "#111", border: "0.5px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box" }} placeholder="80€" />
+                  </div>
+                  <div style={{ flex: 2 }}>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 6 }}>Your email</div>
+                    <input value={alertEmail} onChange={e => setAlertEmail(e.target.value)} style={{ width: "100%", padding: "10px 14px", background: "#111", border: "0.5px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box" }} placeholder="your@email.com" />
+                  </div>
+                </div>
+                <button onClick={() => alertEmail && setAlertSet(true)} style={{ width: "100%", padding: "13px", background: "linear-gradient(135deg, #dc2626, #f97316)", color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                  Set alert — free
+                </button>
+              </>
+            )}
+          </div>
+        )}
+
       </div>
     </main>
   );
