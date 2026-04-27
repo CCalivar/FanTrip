@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+const API_KEY = process.env.FOOTBALL_DATA_API_KEY;
+
 const COMPETITIONS = [
   { code: "CL", name: "Champions League", emoji: "🏆", featured: true },
   { code: "PL", name: "Premier League", emoji: "⚽", featured: true },
@@ -15,7 +17,7 @@ export async function GET() {
     for (const comp of COMPETITIONS) {
       const res = await fetch(
         `https://api.football-data.org/v4/competitions/${comp.code}/matches?status=SCHEDULED`,
-        { headers: { "X-Auth-Token": "7f4bc2c1832544f6b0dff6a3e38c7f96" } }
+        { headers: { "X-Auth-Token": API_KEY! } }
       );
 
       if (!res.ok) continue;
