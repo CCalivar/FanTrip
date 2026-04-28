@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const API_KEY = process.env.FOOTBALL_DATA_API_KEY;
+const API_KEY = "7f4bc2c1832544f6b0dff6a3e38c7f96";
 
 const COMPETITIONS = [
   { code: "CL", name: "Champions League", emoji: "🏆", featured: true },
