@@ -61,14 +61,26 @@ export default function Home() {
         </div>
 
         {/* ORIGIN */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 10, padding: "9px 14px", cursor: "pointer" }}>
-            <span>📍</span>
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>Flying from</span>
-            <span style={{ fontSize: 13, color: "#fff", fontWeight: 600 }}>Madrid (MAD)</span>
-            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>▾</span>
-          </div>
-        </div>
+<div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+  <div 
+    onClick={() => {
+      const city = prompt("Enter your departure city (e.g. Madrid, London, Paris):");
+      if (city) {
+        localStorage.setItem("departureCity", city);
+        window.location.reload();
+      }
+    }}
+    style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 10, padding: "9px 14px", cursor: "pointer" }}>
+    <span>📍</span>
+    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>Flying from</span>
+    <span style={{ fontSize: 13, color: "#fff", fontWeight: 600 }}>
+      {typeof window !== "undefined" && localStorage.getItem("departureCity") 
+        ? localStorage.getItem("departureCity") 
+        : "Madrid (MAD)"}
+    </span>
+    <span style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>▾</span>
+  </div>
+</div>
 
         {/* SEARCH */}
         <div style={{ background: "#fff", borderRadius: 14, display: "flex", alignItems: "stretch", overflow: "hidden", maxWidth: 700, boxShadow: "0 8px 40px rgba(0,0,0,0.35)" }}>

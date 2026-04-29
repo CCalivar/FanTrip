@@ -11,7 +11,6 @@ const COMPETITIONS = [
 ];
 
 const cityMap: Record<string, string> = {
-  // Full names
   "Paris Saint-Germain": "Paris", "Bayern München": "Munich",
   "Arsenal FC": "London", "Chelsea FC": "London", "Tottenham Hotspur FC": "London",
   "West Ham United FC": "London", "Fulham FC": "London", "Brentford FC": "London",
@@ -30,7 +29,6 @@ const cityMap: Record<string, string> = {
   "Leeds United FC": "Leeds", "Burnley FC": "Burnley",
   "PSV Eindhoven": "Eindhoven", "AFC Ajax": "Amsterdam",
   "SL Benfica": "Lisbon", "FC Porto": "Porto",
-  // Short names
   "Atleti": "Madrid", "PSG": "Paris", "Bayern": "Munich", "Barça": "Barcelona",
   "Arsenal": "London", "Chelsea": "London", "Spurs": "London",
   "West Ham": "London", "Fulham": "London", "Brentford": "London", "Palace": "London",
@@ -61,7 +59,6 @@ const cityMap: Record<string, string> = {
 export async function GET() {
   try {
     const allMatches: any[] = [];
-
     for (const comp of COMPETITIONS) {
       const res = await fetch(
         `https://api.football-data.org/v4/competitions/${comp.code}/matches?status=SCHEDULED`,
@@ -88,7 +85,6 @@ export async function GET() {
       }));
       if (matches?.length) allMatches.push(...matches);
     }
-
     return NextResponse.json(allMatches);
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
