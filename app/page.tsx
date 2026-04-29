@@ -209,7 +209,7 @@ export default function Home() {
           <div style={{ background: "#fff", borderRadius: 14, overflow: "hidden", border: "1px solid #ebebeb", marginBottom: 24 }}>
             <div style={{ display: "flex", borderBottom: "1px solid #f0f0f0", overflowX: "auto" }}>
               {leagues.map(l => (
-                <button key={l} onClick={() => setActiveLeague(l)} style={{ padding: "11px 14px", fontSize: 12, fontWeight: 600, color: activeLeague === l ? "#E8330A" : "#999", cursor: "pointer", whiteSpace: "nowrap", borderBottom: activeLeague === l ? "2px solid #E8330A" : "2px solid transparent", marginBottom: -1, background: "none", border: "none", borderBottom: activeLeague === l ? "2px solid #E8330A" : "2px solid transparent", fontFamily: "inherit" }}>{l}</button>
+                <button key={l} onClick={() => setActiveLeague(l)} style={{ padding: "11px 14px", fontSize: 12, fontWeight: 600, color: activeLeague === l ? "#E8330A" : "#999", cursor: "pointer", whiteSpace: "nowrap", borderBottom: activeLeague === l ? "2px solid #E8330A" : "2px solid transparent", marginBottom: -1, background: "none", border: "none", fontFamily: "inherit" }}>{l}</button>
               ))}
             </div>
 
