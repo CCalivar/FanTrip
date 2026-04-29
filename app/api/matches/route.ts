@@ -10,6 +10,27 @@ const COMPETITIONS = [
   { code: "SA", name: "Serie A", emoji: "⚽", featured: false },
 ];
 
+const cityMap: Record<string, string> = {
+  "Paris Saint-Germain": "Paris", "Bayern München": "Munich", "Bayern": "Munich",
+  "Arsenal": "London", "Chelsea": "London", "Tottenham Hotspur": "London",
+  "West Ham United": "London", "Fulham": "London", "Brentford": "London",
+  "Crystal Palace": "London", "Manchester City": "Manchester", "Manchester United": "Manchester",
+  "Real Madrid CF": "Madrid", "Atlético de Madrid": "Madrid", "Atletico Madrid": "Madrid",
+  "FC Barcelona": "Barcelona", "Villarreal CF": "Villarreal", "Valencia CF": "Valencia",
+  "Sevilla FC": "Seville", "Athletic Club": "Bilbao", "Real Sociedad": "San Sebastian",
+  "Juventus FC": "Turin", "AC Milan": "Milan", "Inter Milan": "Milan",
+  "SSC Napoli": "Naples", "AS Roma": "Rome", "SS Lazio": "Rome",
+  "ACF Fiorentina": "Florence", "Atalanta BC": "Bergamo",
+  "Borussia Dortmund": "Dortmund", "Bayer 04 Leverkusen": "Leverkusen",
+  "RB Leipzig": "Leipzig", "Eintracht Frankfurt": "Frankfurt",
+  "Liverpool FC": "Liverpool", "Everton FC": "Liverpool",
+  "Newcastle United": "Newcastle", "Aston Villa": "Birmingham",
+  "Brighton & Hove Albion": "Brighton", "Leicester City": "Leicester",
+  "Leeds United": "Leeds", "Burnley FC": "Burnley",
+  "PSV Eindhoven": "Eindhoven", "AFC Ajax": "Amsterdam",
+  "SL Benfica": "Lisbon", "FC Porto": "Porto",
+};
+
 export async function GET() {
   try {
     const allMatches: any[] = [];
@@ -17,27 +38,26 @@ export async function GET() {
     for (const comp of COMPETITIONS) {
       const res = await fetch(
         `https://api.football-data.org/v4/competitions/${comp.code}/matches?status=SCHEDULED`,
-        { headers: { "X-Auth-Token": API_KEY! } }
+        { headers: { "X-Auth-Token": API_KEY }, next: { revalidate: 3600 } }
       );
-
       if (!res.ok) continue;
-
       const data = await res.json();
-      const matches = data.matches?.slice(0, 4).map((m: any) => ({
+      const matches = data.matches?.slice(0, 6).map((m: any) => ({
         id: m.id,
-        home: m.homeTeam.shortName || m.homeTeam.name,
-        away: m.awayTeam.shortName || m.awayTeam.name,
+        home: m.homeTeam?.shortName || m.homeTeam?.name || "TBD",
+        away: m.awayTeam?.shortName || m.awayTeam?.name || "TBD",
         league: comp.name,
         date: new Date(m.utcDate).toLocaleDateString("en-GB", { day: "numeric", month: "short" }),
         venue: m.venue || "TBC",
-        city: m.area?.name || "Europe",
+        city: m.stage === "FINAL" ? "Munich" :
+              cityMap[m.homeTeam?.name] || cityMap[m.homeTeam?.shortName] ||
+              m.area?.name || "Europe",
         price: Math.floor(Math.random() * 150) + 50,
         drop: Math.random() > 0.5 ? -(Math.floor(Math.random() * 20) + 5) : null,
         tripFrom: Math.floor(Math.random() * 300) + 200,
         featured: comp.featured,
         emoji: comp.emoji,
       }));
-
       if (matches?.length) allMatches.push(...matches);
     }
 
