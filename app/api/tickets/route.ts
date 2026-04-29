@@ -1,3 +1,4 @@
+import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 
 const API_KEY = process.env.TICKETMASTER_API_KEY;
@@ -7,7 +8,9 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${encodeURIComponent(team)}&classificationName=football&locale=*&apikey=${API_KEY}&size=5`,
+      `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${encodeURIComponent(
+        team
+      )}&classificationName=football&locale=*&apikey=${API_KEY}&size=5`,
       { next: { revalidate: 3600 } }
     );
 
@@ -66,5 +69,4 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
-
-export {};
+``
