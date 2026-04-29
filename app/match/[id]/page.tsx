@@ -61,7 +61,8 @@ export default function MatchPage() {
   const skyscannerUrl = destIata
     ? `https://www.skyscanner.com/transport/flights/${originIata}/${destIata}/`
     : `https://www.skyscanner.com/transport/flights/${originIata}/`;
-  const bookingUrl = `https://www.booking.com/search.html?ss=${encodeURIComponent(match?.city || "")}`;
+  const matchDateObj = match?.date ? new Date(match.date + " 2025") : new Date();
+  const bookingUrl = `https://www.booking.com/search.html?ss=${encodeURIComponent(match?.city || "")}&checkin_year=2025&checkin_month=${matchDateObj.getMonth() + 1}&checkin_monthday=${matchDateObj.getDate()}&checkout_year=2025&checkout_month=${matchDateObj.getMonth() + 1}&checkout_monthday=${matchDateObj.getDate() + 2}&group_adults=1&no_rooms=1`;
 
   useEffect(() => {
     if (!match || isSameCity || !destIata) { setLoadingFlights(false); return; }
