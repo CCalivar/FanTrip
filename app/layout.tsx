@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name='impact-site-verification' value='edf0ddc2-0fa3-4dec-b987-dad0c24d283e' />
+        <meta name='impact-site-verification' content='edf0ddc2-0fa3-4dec-b987-dad0c24d283e' />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}

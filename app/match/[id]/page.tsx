@@ -298,7 +298,7 @@ export default function MatchPage() {
                   </div>
                   {[
                     { icon: "🛡️", bg: "#EDE7F6", name: "Travel Insurance", tag: "⭐ Recommended", tagBg: "#F3E5F5", tagColor: "#6A1B9A", desc: "Covers ticket cancellation, flight delays and medical. From 4.90€.", price: "from 4.90€", sub: "per trip", btnText: "Get insured →", btnBg: "#7B1FA2", url: "https://www.chapka-assurances.com" },
-                    { icon: "📱", bg: "#E3F2FD", name: "eSIM for Europe", tag: "🔥 Popular", tagBg: "#E3F2FD", tagColor: "#0D47A1", desc: "Stay connected without roaming. 5GB from 4.50€.", price: "from 4.50€", sub: "5GB · 30 days", btnText: "Get eSIM →", btnBg: "#1565C0", url: "https://www.airalo.com" },
+                    { icon: "📱", bg: "#E3F2FD", name: "eSIM for Europe", tag: "🔥 Popular", tagBg: "#E3F2FD", tagColor: "#0D47A1", desc: "Stay connected without roaming. 5GB from 4.50€.", price: "from 4.50€", sub: "5GB · 30 days", btnText: "Get eSIM →", btnBg: "#1565C0", url: "https://tp.media/r?marker=723474.FT&trs=523774&p=8310&u=https%3A%2F%2Fairalo.com&campaign_id=541" },
                     { icon: "💳", bg: "#F5F5F5", name: "Revolut — zero fees", tag: "💡 Save on FX", tagBg: "#F5F5F5", tagColor: "#424242", desc: "Pay in euros with no hidden charges. Free account.", price: "Free", sub: "open in 5 min", btnText: "Get Revolut →", btnBg: "#1a1a1a", url: "https://www.revolut.com" },
                   ].map((extra, i) => (
                     <div key={i} style={{ padding: "14px 18px", borderBottom: i < 2 ? "1px solid #f7f7f7" : "none", display: "flex", alignItems: "center", gap: 14 }}>
