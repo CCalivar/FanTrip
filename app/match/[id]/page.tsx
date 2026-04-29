@@ -38,17 +38,27 @@ export default function MatchPage() {
     { platform: "Ticketmaster", section: "General Admission", price: (match?.price || 89) + 40, oldPrice: null, badge: null, delivery: "E-ticket", url: `https://www.ticketmaster.com/search?q=${encodeURIComponent(match?.home || "")}` },
   ];
 
-  const flights = [
-    { airline: "Vueling", route: `MAD → ${match?.city || "TBC"}`, duration: "Direct · 2h", price: 72, oldPrice: 94, badge: "Cheapest", url: `https://www.skyscanner.com/transport/flights/mad/?&adults=1` },
-    { airline: "Iberia", route: `MAD → ${match?.city || "TBC"}`, duration: "Direct · 2h", price: 96, oldPrice: 117, badge: "↓ 18%", url: `https://www.skyscanner.com/transport/flights/mad/?&adults=1` },
-    { airline: "Ryanair", route: `MAD → ${match?.city || "TBC"}`, duration: "Direct · 2h 30m", price: 54, oldPrice: null, badge: "Early flight", url: `https://www.skyscanner.com/transport/flights/mad/?&adults=1` },
-  ];
+  const matchDate = match?.date ? match.date.replace(" ", "-") : "";
+const cityCode = match?.city === "Europe" ? match?.home?.toLowerCase().includes("paris") ? "cdg" :
+  match?.home?.toLowerCase().includes("munich") ? "muc" :
+  match?.home?.toLowerCase().includes("london") ? "lhr" :
+  match?.home?.toLowerCase().includes("madrid") ? "mad" :
+  match?.home?.toLowerCase().includes("barcelona") ? "bcn" : "xxx" : "xxx";
+
+const skyscannerUrl = `https://www.skyscanner.com/transport/flights/mad/${cityCode}/?adults=1`;
+const bookingUrl = `https://www.booking.com/search.html?ss=${encodeURIComponent(match?.city || "")}&checkin=${matchDate}&checkout=${matchDate}`;
+
+const flights = [
+  { airline: "Vueling", route: `MAD → ${match?.city || "TBC"}`, duration: "Direct · 2h", price: 72, oldPrice: 94, badge: "Cheapest", url: skyscannerUrl },
+  { airline: "Iberia", route: `MAD → ${match?.city || "TBC"}`, duration: "Direct · 2h", price: 96, oldPrice: 117, badge: "↓ 18%", url: skyscannerUrl },
+  { airline: "Ryanair", route: `MAD → ${match?.city || "TBC"}`, duration: "Direct · 2h 30m", price: 54, oldPrice: null, badge: "Early flight", url: skyscannerUrl },
+];
 
   const hotels = [
-    { name: `Ibis ${match?.city || "City"} Centro`, distance: "0.8km from stadium", details: "Free cancellation", price: 67, oldPrice: 89, badge: "Best value", url: `https://www.booking.com/search.html?ss=${encodeURIComponent(match?.city || "")}` },
-    { name: `NH Collection ${match?.city || "City"}`, distance: "0.3km from stadium", details: "Breakfast included", price: 124, oldPrice: null, badge: "2 left", url: `https://www.booking.com/search.html?ss=${encodeURIComponent(match?.city || "")}` },
-    { name: "Marriott", distance: "1.2km from stadium", details: "Free cancellation", price: 98, oldPrice: 115, badge: null, url: `https://www.booking.com/search.html?ss=${encodeURIComponent(match?.city || "")}` },
-  ];
+  { name: `Ibis ${match?.city || "City"} Centro`, distance: "0.8km from stadium", details: "Free cancellation", price: 67, oldPrice: 89, badge: "Best value", url: bookingUrl },
+  { name: `NH Collection ${match?.city || "City"}`, distance: "0.3km from stadium", details: "Breakfast included", price: 124, oldPrice: null, badge: "2 left", url: bookingUrl },
+  { name: "Marriott", distance: "1.2km from stadium", details: "Free cancellation", price: 98, oldPrice: 115, badge: null, url: bookingUrl },
+];
 
   const totalPrice = ticketList[0]?.price + flights[2].price + hotels[0].price * 2;
 
