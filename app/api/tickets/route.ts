@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const API_KEY = process.env.TICKETMASTER_API_KEY;
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const team = searchParams.get("team") || "";
+export async function GET(request: NextRequest) {
+  const team = request.nextUrl.searchParams.get("team") || "";
 
   try {
     const res = await fetch(
@@ -69,4 +68,3 @@ export async function GET(request: Request) {
 }
 
 export {};
-
