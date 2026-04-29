@@ -5,7 +5,6 @@ const API_KEY = process.env.TICKETMASTER_API_KEY;
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const team = searchParams.get("team") || "";
-  const date = searchParams.get("date") || "";
 
   try {
     const res = await fetch(
@@ -31,12 +30,41 @@ export async function GET(request: Request) {
       url: e.url,
     }));
 
-    return NextResponse.json(tickets.length > 0 ? tickets : [
-      { platform: "StubHub", section: "Category B — Tier 2", price: 89, oldPrice: 108, badge: "Best value", delivery: "E-ticket · Instant", url: `https://www.stubhub.com/search?q=${encodeURIComponent(team)}` },
-      { platform: "Viagogo", section: "Category A — Tier 1", price: 215, oldPrice: null, badge: "3 left", delivery: "E-ticket · Instant", url: `https://www.viagogo.com/search?q=${encodeURIComponent(team)}` },
-      { platform: "Ticketmaster", section: "VIP Hospitality", price: 490, oldPrice: null, badge: null, delivery: "Includes catering", url: `https://www.ticketmaster.com/search?q=${encodeURIComponent(team)}` },
-    ]);
+    return NextResponse.json(
+      tickets.length > 0
+        ? tickets
+        : [
+            {
+              platform: "StubHub",
+              section: "Category B — Tier 2",
+              price: 89,
+              oldPrice: 108,
+              badge: "Best value",
+              delivery: "E-ticket · Instant",
+              url: `https://www.stubhub.com/search?q=${encodeURIComponent(team)}`,
+            },
+            {
+              platform: "Viagogo",
+              section: "Category A — Tier 1",
+              price: 215,
+              oldPrice: null,
+              badge: "3 left",
+              delivery: "E-ticket · Instant",
+              url: `https://www.viagogo.com/search?q=${encodeURIComponent(team)}`,
+            },
+            {
+              platform: "Ticketmaster",
+              section: "VIP Hospitality",
+              price: 490,
+              oldPrice: null,
+              badge: null,
+              delivery: "Includes catering",
+              url: `https://www.ticketmaster.com/search?q=${encodeURIComponent(team)}`,
+            },
+          ]
+    );
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
+``
