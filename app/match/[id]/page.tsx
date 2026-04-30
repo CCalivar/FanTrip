@@ -49,7 +49,7 @@ export default function MatchPage() {
 
   useEffect(() => {
     if (!match) return;
-    fetch(`/api/tickets?team=${encodeURIComponent(match.home)}`)
+fetch(`/api/tickets?team=${encodeURIComponent(match.home)}&city=${encodeURIComponent(match.city)}&date=${encodeURIComponent(match.date)}`)
       .then(r => r.json())
       .then(data => { setTickets(Array.isArray(data) ? data.slice(0, 3) : []); setLoadingTickets(false); })
       .catch(() => setLoadingTickets(false));

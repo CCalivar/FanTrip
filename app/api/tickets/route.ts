@@ -5,46 +5,48 @@ const RAPIDAPI_KEY = "9ea437f52fmsheb8b95077ea0ae9p1e78aajsn605392291ad3";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const team = searchParams.get("team") || "";
+  const city = searchParams.get("city") || "";
+  const date = searchParams.get("date") || "";
 
   try {
-    // Buscar performer en SeatGeek
-    const performerRes = await fetch(
-      `https://seatgeek-seatgeekcom.p.rapidapi.com/performers?q=${encodeURIComponent(team)}&per_page=1`,
-      { headers: { "x-rapidapi-key": RAPIDAPI_KEY, "x-rapidapi-host": "seatgeek-seatgeekcom.p.rapidapi.com" } }
-    );
-    const performerData = await performerRes.json();
-    const performer = performerData.performers?.[0];
+    // Buscar eventos por equipo + ciudad + fecha
+    const dateFormatted = date ? new Date(date + " 2025").toISOString().split("T")[0] : "";
+    const nextDay = date ? new Date(new Date(date + " 2025").getTime() + 86400000).toISOString().split("T")[0] : "";
 
-    if (!performer) return NextResponse.json(getFallback(team));
+    const url = `https://seatgeek-seatgeekcom.p.rapidapi.com/events?q=${encodeURIComponent(team)}&per_page=5&sort=datetime_utc.asc${dateFormatted ? `&datetime_utc.gte=${dateFormatted}&datetime_utc.lte=${nextDay}` : ""}${city ? `&venue.city=${encodeURIComponent(city)}` : ""}`;
 
-    // Buscar eventos de ese performer
-    const eventsRes = await fetch(
-      `https://seatgeek-seatgeekcom.p.rapidapi.com/events?performers.id=${performer.id}&per_page=3&sort=datetime_utc.asc`,
-      { headers: { "x-rapidapi-key": RAPIDAPI_KEY, "x-rapidapi-host": "seatgeek-seatgeekcom.p.rapidapi.com" } }
-    );
-    const eventsData = await eventsRes.json();
-    const events = eventsData.events || [];
+    const res = await fetch(url, {
+      headers: {
+        "x-rapidapi-key": RAPIDAPI_KEY,
+        "x-rapidapi-host": "seatgeek-seatgeekcom.p.rapidapi.com"
+      }
+    });
 
-    if (events.length === 0) return NextResponse.json(getFallback(team));
+    const data = await res.json();
+    const events = data.events || [];
 
-    return NextResponse.json(events.map((e: any, i: number) => ({
-      platform: "SeatGeek",
-      section: e.title || e.short_title || team,
-      price: Math.round(e.stats?.lowest_price || 89),
-      oldPrice: e.stats?.average_price ? Math.round(e.stats.average_price) : null,
-      badge: i === 0 ? "Best value" : null,
-      delivery: "E-ticket · Instant",
-      url: e.url,
-    })));
+    if (events.length > 0) {
+      return NextResponse.json(events.map((e: any, i: number) => ({
+        platform: "SeatGeek",
+        section: e.title || e.short_title,
+        price: Math.round(e.stats?.lowest_price || 89),
+        oldPrice: e.stats?.average_price ? Math.round(e.stats.average_price) : null,
+        badge: i === 0 ? "Best value" : null,
+        delivery: "E-ticket · Instant",
+        url: e.url,
+      })));
+    }
+
+    return NextResponse.json(getFallback(team, city));
   } catch {
-    return NextResponse.json(getFallback(team));
+    return NextResponse.json(getFallback(team, city));
   }
 }
 
-function getFallback(team: string) {
+function getFallback(team: string, city: string) {
   return [
-    { platform: "StubHub", section: "Category B — Best available", price: 89, oldPrice: 108, badge: "Best value", delivery: "E-ticket · Instant", url: `https://www.stubhub.com/search?q=${encodeURIComponent(team)}` },
-    { platform: "Viagogo", section: "Category A — Premium seats", price: 215, oldPrice: null, badge: null, delivery: "E-ticket · Instant", url: `https://www.viagogo.com/search?q=${encodeURIComponent(team)}` },
+    { platform: "StubHub", section: "Best available tickets", price: 89, oldPrice: 108, badge: "Best value", delivery: "E-ticket · Instant", url: `https://www.stubhub.com/search?q=${encodeURIComponent(team)}` },
+    { platform: "Viagogo", section: "Premium seats", price: 215, oldPrice: null, badge: null, delivery: "E-ticket · Instant", url: `https://www.viagogo.com/search?q=${encodeURIComponent(team + " " + city)}` },
     { platform: "Ticketmaster", section: "Official tickets", price: 150, oldPrice: null, badge: "Official", delivery: "E-ticket", url: `https://www.ticketmaster.com/search?q=${encodeURIComponent(team)}` },
   ];
 }
