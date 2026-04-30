@@ -250,7 +250,7 @@ export default function Home() {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 32, marginBottom: 24 }}>
               <div style={{ flex: "1 1 200px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                  <div style={{ width: 26, height: 26, borderRadius: 7, background: "linear-gradient(135deg,#E8330A,#F97316)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}><img src="/ChatGPT_Image_30_abr_2026__01_53_03.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" }} /></div>
+                  <div style={{ width: 26, height: 26, borderRadius: 7, background: "linear-gradient(135deg,#E8330A,#F97316)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}><img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" }} /></div>
                   <span style={{ fontSize: 14, fontWeight: 800, color: "#fff" }}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
                 </div>
                 <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", lineHeight: 1.7, maxWidth: 220 }}>The smartest way to plan football away trips. Tickets, flights and hotels from your city.</div>
