@@ -14,8 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FanTrip — Tickets, flights & hotels for any football match",
-  description: "Find the cheapest way to attend any football match in Europe. Tickets, flights and hotels in one search. Prices calculated from your city.",
+  title: {
+    default: "FanTrip — Cheap Tickets, Flights & Hotels for Any Football Match",
+    template: "%s | FanTrip",
+  },
+  description: "Find the cheapest way to attend any football match in Europe. Compare ticket prices, flights and hotels in one search. Prices from your city.",
+  openGraph: {
+    siteName: "FanTrip",
+    type: "website",
+    locale: "en_US",
+  },
 };
 
 export default function RootLayout({
