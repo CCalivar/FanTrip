@@ -95,17 +95,16 @@ export default function WorldCup2026() {
             Track ticket & travel prices now — before they spike.
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24, flexWrap: "wrap" as const }}>
-            {[["🇺🇸", "USA", "11 cities"], ["🇨🇦", "Canada", "2 cities"], ["🇲🇽", "Mexico", "3 cities"]].map(([flag, country, cities]) => (
-              <div key={country} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px 14px" }}>
-                <span style={{ fontSize: 18 }}>{flag}</span>
-                <div><div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{country}</div><div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>{cities}</div></div>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" as const, marginBottom: 36 }}>
-            <button style={{ background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", padding: "13px 24px", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 20px rgba(232,51,10,0.3)" }}>🔔 Set price alerts — free</button>
-            <button style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", padding: "13px 20px", borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>🏟 Browse host cities</button>
-          </div>
+  {([["🇺🇸", "USA", "11 cities"], ["🇨🇦", "Canada", "2 cities"], ["🇲🇽", "Mexico", "3 cities"]] as string[][]).map(([flag, country, cities]) => (
+    <div key={country} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px 14px" }}>
+      <span style={{ fontSize: 18 }}>{flag}</span>
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{country}</div>
+        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>{cities}</div>
+      </div>
+    </div>
+  ))}
+</div>
         </div>
       </div>
 
@@ -179,7 +178,7 @@ export default function WorldCup2026() {
                 </div>
               </div>
               {pricePhases.map((p, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 18px", borderBottom: i < pricePhases.length - 1 ? "1px solid #f7f7f7" : "none", flexWrap: "wrap" as const, gap: 12 }}>
+                <div key={i} style={{ display: "flex", alignItems: "center", padding: "12px 18px", borderBottom: i < pricePhases.length - 1 ? "1px solid #f7f7f7" : "none", flexWrap: "wrap" as const, gap: 12 }}>
                   <div style={{ width: 110, flexShrink: 0 }}>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a1a" }}>{p.name}</div>
                     <div style={{ fontSize: 10, color: "#aaa" }}>{p.date}</div>
