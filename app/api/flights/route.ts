@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const RAPIDAPI_KEY = "9ea437f52fmsheb8b95077ea0ae9p1e78aajsn605392291ad3";
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY || "";
 
 function buildAviasalesUrl(origin: string, dest: string, date: string) {
   try {
