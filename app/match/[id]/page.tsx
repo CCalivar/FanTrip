@@ -117,7 +117,18 @@ export default function MatchPage() {
     { name: "Marriott", distance: "1.2km from stadium", details: "Free cancellation", price: 98, oldPrice: 115, badge: null, url: bookingUrl },
   ];
 
-  const totalPrice = ticketList[0]?.price + (isSameCity ? 0 : flightList[2]?.price || 54) + hotelList[0]?.price * 2;
+  const totalPrice = (ticketList[0]?.price || 0) + (isSameCity ? 0 : flightList[2]?.price || 54) + (hotelList[0]?.price || 0) * 2;
+
+  const handleBookTrip = () => {
+    const urls = [
+      ticketList[0]?.url,
+      !isSameCity ? flightList[2]?.url : null,
+      hotelList[0]?.url,
+    ].filter(Boolean) as string[];
+    urls.forEach((url, i) => {
+      setTimeout(() => window.open(url, "_blank", "noopener,noreferrer"), i * 400);
+    });
+  };
 
   const handleAlertSubmit = async () => {
     if (!alertEmail) return;
@@ -143,7 +154,7 @@ export default function MatchPage() {
       <nav style={{ background: "#0D0D0D", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #E8330A", position: "sticky" as const, top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center" }}>
           <div onClick={() => router.push("/")} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginRight: 28 }}>
-            <img src="/ChatGPT_Image_30_abr_2026__01_53_03.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
+            <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
             <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16, flexWrap: "wrap" as const }}>
@@ -204,7 +215,7 @@ export default function MatchPage() {
                 <div style={{ fontSize: 12, color: "#2E7D32", fontWeight: 600, marginTop: 4 }}>✓ Saves ~100€ vs booking separately</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, alignItems: "flex-end" }}>
-                <button style={{ background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", padding: "14px 28px", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Book this trip →</button>
+                <button onClick={handleBookTrip} style={{ background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", padding: "14px 28px", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Book this trip →</button>
                 <button onClick={() => setActiveTab("alerts")} style={{ background: "transparent", border: "1.5px solid #E8330A", color: "#E8330A", padding: "8px 18px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>🔔 Get the best deals</button>
               </div>
             </div>
@@ -265,22 +276,24 @@ export default function MatchPage() {
                         </div>
                       </div>
                     ))}
-                    <div style={{ background: "#EFF8FF", border: "1px solid #BFDFFF", borderRadius: 10, padding: "13px 16px", margin: "12px 18px", display: "flex", alignItems: "flex-start", gap: 12 }}>
-                      <span style={{ fontSize: 18 }}>💡</span>
-                      <div>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#0D47A1", marginBottom: 4 }}>Try nearby airports — save up to 43€</div>
-                        <div style={{ fontSize: 11, color: "#1565C0", marginBottom: 10 }}>Flying from a different airport near {departureCity} can reduce your cost.</div>
-                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const }}>
-                          {[["✈ Valladolid (VLL)", "Save 43€", "190km"], ["✈ Zaragoza (ZAZ)", "Save 31€", "320km"], ["✈ Barcelona (BCN)", "Save 18€", "Train 2h30"]].map(([airport, saving, dist]) => (
-                            <div key={airport} style={{ background: "#fff", border: "1.5px solid #90CAF9", borderRadius: 8, padding: "7px 12px", cursor: "pointer" }}>
-                              <div style={{ fontSize: 12, fontWeight: 700 }}>{airport}</div>
-                              <div style={{ fontSize: 10, color: "#2E7D32", fontWeight: 600 }}>{saving}</div>
-                              <div style={{ fontSize: 10, color: "#aaa" }}>{dist}</div>
-                            </div>
-                          ))}
+                    {departureCity === "Madrid" && (
+                      <div style={{ background: "#EFF8FF", border: "1px solid #BFDFFF", borderRadius: 10, padding: "13px 16px", margin: "12px 18px", display: "flex", alignItems: "flex-start", gap: 12 }}>
+                        <span style={{ fontSize: 18 }}>💡</span>
+                        <div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#0D47A1", marginBottom: 4 }}>Try nearby airports — save up to 43€</div>
+                          <div style={{ fontSize: 11, color: "#1565C0", marginBottom: 10 }}>Flying from a different airport near {departureCity} can reduce your cost.</div>
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const }}>
+                            {[["✈ Valladolid (VLL)", "Save 43€", "190km"], ["✈ Zaragoza (ZAZ)", "Save 31€", "320km"], ["✈ Barcelona (BCN)", "Save 18€", "Train 2h30"]].map(([airport, saving, dist]) => (
+                              <div key={airport} style={{ background: "#fff", border: "1.5px solid #90CAF9", borderRadius: 8, padding: "7px 12px", cursor: "pointer" }}>
+                                <div style={{ fontSize: 12, fontWeight: 700 }}>{airport}</div>
+                                <div style={{ fontSize: 10, color: "#2E7D32", fontWeight: 600 }}>{saving}</div>
+                                <div style={{ fontSize: 10, color: "#aaa" }}>{dist}</div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
 

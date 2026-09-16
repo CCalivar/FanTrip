@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const API_KEY = "7f4bc2c1832544f6b0dff6a3e38c7f96";
+const API_KEY = process.env.FOOTBALL_DATA_API_KEY || "";
 
 const COMPETITIONS = [
   { code: "CL", name: "Champions League", emoji: "🏆", featured: true },
@@ -8,6 +8,13 @@ const COMPETITIONS = [
   { code: "PD", name: "LaLiga", emoji: "⚽", featured: false },
   { code: "BL1", name: "Bundesliga", emoji: "⚽", featured: false },
   { code: "SA", name: "Serie A", emoji: "⚽", featured: false },
+  // First South America competition: Brasileirão (Campeonato Brasileiro
+  // Série A) is covered by football-data.org's existing free tier under
+  // code "BSA", so it can go live with the API key already in use — no new
+  // API needed. Copa Libertadores and Liga Profesional Argentina are NOT on
+  // football-data.org's free tier; those stay out of this list until Cami
+  // sources a provider that covers them (see project doc).
+  { code: "BSA", name: "Brasileirão", emoji: "🇧🇷", featured: false },
 ];
 
 const cityMap: Record<string, string> = {
@@ -54,6 +61,26 @@ const cityMap: Record<string, string> = {
   "Leicester": "Leicester", "Leeds": "Leeds", "Burnley": "Burnley",
   "Forest": "Nottingham", "Wolves": "Wolverhampton",
   "Southampton": "Southampton", "Ipswich": "Ipswich",
+  // Brasileirão (South America expansion — see COMPETITIONS above).
+  "Flamengo": "Rio de Janeiro", "CR Flamengo": "Rio de Janeiro",
+  "Fluminense": "Rio de Janeiro", "Fluminense FC": "Rio de Janeiro",
+  "Botafogo": "Rio de Janeiro", "Botafogo FR": "Rio de Janeiro",
+  "Vasco da Gama": "Rio de Janeiro", "CR Vasco da Gama": "Rio de Janeiro",
+  "Palmeiras": "São Paulo", "SE Palmeiras": "São Paulo",
+  "Corinthians": "São Paulo", "SC Corinthians Paulista": "São Paulo",
+  "São Paulo": "São Paulo", "São Paulo FC": "São Paulo",
+  "Santos": "Santos", "Santos FC": "Santos",
+  "Red Bull Bragantino": "Bragança Paulista",
+  "Grêmio": "Porto Alegre", "Grêmio FBPA": "Porto Alegre",
+  "Internacional": "Porto Alegre", "SC Internacional": "Porto Alegre",
+  "Atlético Mineiro": "Belo Horizonte", "Clube Atlético Mineiro": "Belo Horizonte",
+  "Cruzeiro": "Belo Horizonte", "Cruzeiro EC": "Belo Horizonte",
+  "Bahia": "Salvador", "EC Bahia": "Salvador", "Vitória": "Salvador", "EC Vitória": "Salvador",
+  "Fortaleza": "Fortaleza", "Fortaleza EC": "Fortaleza", "Ceará": "Fortaleza", "Ceará SC": "Fortaleza",
+  "Athletico Paranaense": "Curitiba", "CA Paranaense": "Curitiba",
+  "Sport Recife": "Recife", "Sport Club do Recife": "Recife",
+  "Juventude": "Caxias do Sul", "EC Juventude": "Caxias do Sul",
+  "Mirassol": "Mirassol", "Mirassol FC": "Mirassol",
 };
 
 export async function GET() {
@@ -73,7 +100,13 @@ export async function GET() {
         league: comp.name,
         date: new Date(m.utcDate).toLocaleDateString("en-GB", { day: "numeric", month: "short" }),
         venue: m.venue || "TBC",
-        city: m.stage === "FINAL" ? "Munich" :
+        // The Champions League final's host city changes every season (it
+        // was hardcoded to "Munich" — that was the 2024/25 final's venue,
+        // already wrong by the time this was checked in 2026/27; the
+        // confirmed venue for the 2026/27 final is Estadio Metropolitano,
+        // Madrid). Update this each season, same failure mode as the
+        // hardcoded "Season" strings fixed via lib/season.ts.
+        city: m.stage === "FINAL" ? "Madrid" :
               cityMap[m.homeTeam?.shortName] ||
               cityMap[m.homeTeam?.name] ||
               m.area?.name || "Europe",
