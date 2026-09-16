@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,27 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name='impact-site-verification' content='edf0ddc2-0fa3-4dec-b987-dad0c24d283e' />
+        {/* Organization schema: helps both classic search (Google rich
+            results / Knowledge Panel) and AI answer engines (ChatGPT,
+            Perplexity, Google AI Overviews) correctly identify what FanTrip
+            is when citing or summarizing it — part of the GEO (Generative
+            Engine Optimization) work, alongside /llms.txt. */}
+        <Script
+          id="organization-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "FanTrip",
+              url: SITE_URL,
+              logo: `${SITE_URL}/fantrip-logo.png`,
+              description:
+                "FanTrip compares match tickets, flights and hotels so football fans can find the cheapest way to attend any match, with prices from their own city.",
+              sameAs: [],
+            }),
+          }}
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Script

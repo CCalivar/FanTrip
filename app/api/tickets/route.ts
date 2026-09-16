@@ -10,8 +10,9 @@ export async function GET(request: Request) {
 
   try {
     // Buscar eventos por equipo + ciudad + fecha
-    const dateFormatted = date ? new Date(date + " 2025").toISOString().split("T")[0] : "";
-    const nextDay = date ? new Date(new Date(date + " 2025").getTime() + 86400000).toISOString().split("T")[0] : "";
+    const eventYear = resolveEventYear(date);
+    const dateFormatted = date ? new Date(date + " " + eventYear).toISOString().split("T")[0] : "";
+    const nextDay = date ? new Date(new Date(date + " " + eventYear).getTime() + 86400000).toISOString().split("T")[0] : "";
 
     const url = `https://seatgeek-seatgeekcom.p.rapidapi.com/events?q=${encodeURIComponent(team)}&per_page=5&sort=datetime_utc.asc${dateFormatted ? `&datetime_utc.gte=${dateFormatted}&datetime_utc.lte=${nextDay}` : ""}${city ? `&venue.city=${encodeURIComponent(city)}` : ""}`;
 
@@ -41,6 +42,21 @@ export async function GET(request: Request) {
   } catch {
     return NextResponse.json(getFallback(team, city));
   }
+}
+
+function resolveEventYear(dateStr: string) {
+  // dateStr comes as "24 Aug" (no year). Fixtures are always upcoming, so if
+  // parsing it against the current year lands more than ~30 days in the
+  // past, the match must actually fall in the following year (e.g. today is
+  // Dec 2026 and the fixture is "15 Jan" -> Jan 2027, not Jan 2026).
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  if (!dateStr) return currentYear;
+  const parsedThisYear = new Date(`${dateStr} ${currentYear}`);
+  if (!isNaN(parsedThisYear.getTime()) && parsedThisYear.getTime() < now.getTime() - 30 * 86400000) {
+    return currentYear + 1;
+  }
+  return currentYear;
 }
 
 function getFallback(team: string, city: string) {

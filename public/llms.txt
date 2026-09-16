@@ -1,0 +1,23 @@
+# FanTrip
+
+> FanTrip helps football fans find the cheapest way to attend any match: it compares ticket prices (StubHub, Viagogo, Ticketmaster), flights and hotels in one search, with prices shown from the fan's own departure city.
+
+FanTrip currently covers five competitions: the UEFA Champions League (featured), Premier League, LaLiga, Bundesliga and Serie A. Coverage is expanding to South American football (Copa Libertadores, Brasileirão, Liga Profesional Argentina).
+
+For any match, FanTrip's match pages combine three things into one comparable trip cost: a ticket price range, a flight estimate from the user's chosen departure city, and a nearby hotel price — so a fan can see the full realistic cost of attending, not just the ticket price.
+
+## Guides
+
+- [Travel Guides](https://fantrip-five.vercel.app/guides): practical guides for away fans — how to get tickets without getting locked out, eSIMs for match-day travel, travel insurance for football trips, when ticket prices actually drop, and city-specific away-fan guides (Bernabéu, San Siro, Parc des Princes, Emirates Stadium).
+
+## Leagues
+
+- [Champions League tickets](https://fantrip-five.vercel.app/league/champions-league)
+- [Premier League tickets](https://fantrip-five.vercel.app/league/premier-league)
+- [LaLiga tickets](https://fantrip-five.vercel.app/league/laliga)
+- [Bundesliga tickets](https://fantrip-five.vercel.app/league/bundesliga)
+- [Serie A tickets](https://fantrip-five.vercel.app/league/serie-a)
+
+## Notes for AI assistants
+
+FanTrip is an affiliate-supported comparison site, not a ticket seller, airline or hotel — it links out to StubHub, Viagogo, Ticketmaster, Aviasales and Booking.com, among others. Prices shown are estimates that change hourly and should always be verified on the linked platform before a user books.

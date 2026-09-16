@@ -8,14 +8,25 @@ import Link from "next/link";
 
 const guidesDir = path.join(process.cwd(), "content/guides");
 
+// gray-matter parses an unquoted YAML date (e.g. `date: 2026-05-01`) into a
+// real JS Date object, not a string — rendering that object directly in JSX
+// crashes ("Objects are not valid as a React child"). Format defensively so
+// it works whether the frontmatter value comes back as a Date or a string.
+function formatGuideDate(value: unknown): string {
+  const d = value instanceof Date ? value : new Date(String(value));
+  if (isNaN(d.getTime())) return String(value ?? "");
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
 export async function generateStaticParams() {
   const files = fs.readdirSync(guidesDir);
   return files.map((f) => ({ slug: f.replace(".md", "") }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   try {
-    const file = fs.readFileSync(path.join(guidesDir, `${params.slug}.md`), "utf8");
+    const file = fs.readFileSync(path.join(guidesDir, `${slug}.md`), "utf8");
     const { data } = matter(file);
     return {
       title: `${data.title} | FanTrip Guides`,
@@ -37,10 +48,11 @@ const categoryColors: Record<string, { bg: string; color: string; label: string 
   planning: { bg: "#E8F5E9", color: "#1B5E20", label: "📋 Planning" },
 };
 
-export default async function GuidePage({ params }: { params: { slug: string } }) {
+export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   let content, frontmatter;
   try {
-    const file = fs.readFileSync(path.join(guidesDir, `${params.slug}.md`), "utf8");
+    const file = fs.readFileSync(path.join(guidesDir, `${slug}.md`), "utf8");
     const { data, content: mdContent } = matter(file);
     frontmatter = data;
     const processed = await remark().use(html).process(mdContent);
@@ -88,7 +100,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
       <nav style={{ background: "#0D0D0D", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #E8330A", position: "sticky" as const, top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, marginRight: 28, textDecoration: "none" }}>
-            <img src="/ChatGPT_Image_30_abr_2026__01_53_03.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
+            <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
             <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
           </Link>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16 }}>
@@ -115,7 +127,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           </p>
           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", display: "flex", gap: 16 }}>
             <span>📖 {frontmatter.readTime} min read</span>
-            <span>📅 {frontmatter.date}</span>
+            <span>📅 {formatGuideDate(frontmatter.date)}</span>
           </div>
         </div>
       </div>
@@ -191,7 +203,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
               { title: "World Cup 2026 tickets guide", slug: "world-cup-2026-tickets-guide" },
               { title: "Best travel cards for away trips", slug: "best-zero-fee-cards-football-travel" },
               { title: "When do ticket prices drop?", slug: "when-do-football-ticket-prices-drop" },
-            ].filter(g => g.slug !== params.slug).slice(0, 4).map((g, i) => (
+            ].filter(g => g.slug !== slug).slice(0, 4).map((g, i) => (
               <Link key={i} href={`/guides/${g.slug}`} style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#1a1a1a", padding: "8px 0", borderBottom: i < 3 ? "1px solid #f7f7f7" : "none", textDecoration: "none" }}>
                 → {g.title}
               </Link>

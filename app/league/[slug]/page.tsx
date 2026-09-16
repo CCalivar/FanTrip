@@ -1,6 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { getCurrentSeasonLabel } from "@/lib/season";
 
 const leagueInfo: Record<string, any> = {
   "champions-league": { name: "Champions League", emoji: "🏆", color: "#0a2a5e", code: "CL" },
@@ -8,6 +9,7 @@ const leagueInfo: Record<string, any> = {
   "laliga": { name: "LaLiga", emoji: "🟡", color: "#FF4B44", code: "PD" },
   "bundesliga": { name: "Bundesliga", emoji: "⚫", color: "#D3010C", code: "BL1" },
   "serie-a": { name: "Serie A", emoji: "🔵", color: "#1B3F8B", code: "SA" },
+  "brasileirao": { name: "Brasileirão", emoji: "🇧🇷", color: "#2B4239", code: "BSA" },
 };
 
 const bracket = {
@@ -32,6 +34,9 @@ export default function LeaguePage() {
   const [loading, setLoading] = useState(true);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const isUCL = slug === "champions-league";
+  // Brasileirão runs Jan–Dec (calendar year), unlike the Aug–May European
+  // season shown for every other league here.
+  const seasonLabel = slug === "brasileirao" ? String(new Date().getFullYear()) : getCurrentSeasonLabel();
 
   useEffect(() => {
     fetch("/api/matches")
@@ -57,7 +62,7 @@ export default function LeaguePage() {
       <nav style={s.nav}>
         <div style={s.navInner}>
           <div onClick={() => router.push("/")} style={s.logo}>
-            <img src="/ChatGPT_Image_30_abr_2026__01_53_03.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
+            <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
             <span style={s.logoText}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16 }}>
@@ -76,13 +81,13 @@ export default function LeaguePage() {
           <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 20, flexWrap: "wrap" as const }}>
             <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30, flexShrink: 0 }}>{league.emoji}</div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: 0.5, marginBottom: 5 }}>2024/25 Season</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: 0.5, marginBottom: 5 }}>{seasonLabel} Season</div>
               <h1 style={{ fontSize: "clamp(22px,4vw,34px)", fontWeight: 900, color: "#fff", letterSpacing: -1, marginBottom: 5 }}>{league.name}</h1>
               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", display: "flex", gap: 8, flexWrap: "wrap" as const }}>
                 <span>{matches.length} upcoming matches</span>
                 <span style={{ color: "rgba(255,255,255,0.2)" }}>·</span>
                 <span style={{ color: "#60a5fa", fontWeight: 600 }}>Live prices</span>
-                {isUCL && <><span style={{ color: "rgba(255,255,255,0.2)" }}>·</span><span style={{ color: "#fbbf24", fontWeight: 600 }}>Final: 31 May · Munich</span></>}
+                {isUCL && <><span style={{ color: "rgba(255,255,255,0.2)" }}>·</span><span style={{ color: "#fbbf24", fontWeight: 600 }}>Final: May 2027 · Madrid</span></>}
               </div>
             </div>
             <div style={{ display: "flex", gap: 0 }}>
