@@ -52,14 +52,14 @@ export default function GuidesPage() {
   const guides = getGuides();
 
   return (
-    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F2F3F5", minHeight: "100vh", color: "#1a1a1a" }}>
+    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F7F4EE", minHeight: "100vh", color: "#1a1a1a" }}>
 
       {/* NAV */}
-      <nav style={{ background: "#0D0D0D", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #E8330A", position: "sticky" as const, top: 0, zIndex: 100 }}>
+      <nav style={{ background: "#1C1B18", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #B0492E", position: "sticky" as const, top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, marginRight: 28, textDecoration: "none" }}>
             <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
-            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#C79A4B" }}>Trip</span></span>
           </Link>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16 }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>Home</Link>
@@ -70,7 +70,7 @@ export default function GuidesPage() {
       </nav>
 
       {/* HERO */}
-      <div style={{ background: "linear-gradient(160deg,#0D0D0D 0%,#1a1a2e 100%)", padding: "40px 20px 36px" }}>
+      <div style={{ background: "linear-gradient(160deg,#1C1B18 0%,#2A2621 100%)", padding: "40px 20px 36px" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <h1 style={{ fontSize: "clamp(24px,4vw,38px)", fontWeight: 900, color: "#fff", letterSpacing: -1, lineHeight: 1.1, marginBottom: 12 }}>
             Travel Guides

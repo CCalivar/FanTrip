@@ -66,7 +66,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   // Related affiliate based on category
   const affiliates: Record<string, { name: string; desc: string; btnText: string; btnBg: string; url: string }[]> = {
     tickets: [
-      { name: "StubHub", desc: "Best available tickets · E-ticket instant", btnText: "Find tickets →", btnBg: "#E8330A", url: "https://stubhubinternational.sjv.io/gRWRRv" },
+      { name: "StubHub", desc: "Best available tickets · E-ticket instant", btnText: "Find tickets →", btnBg: "#B0492E", url: "https://stubhubinternational.sjv.io/gRWRRv" },
     ],
     insurance: [
       { name: "Chapka Assurances", desc: "Covers event cancellation · from 12€", btnText: "Get insured →", btnBg: "#7B1FA2", url: "https://www.chapka-assurances.com" },
@@ -94,14 +94,14 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   const relatedAffs = affiliates[frontmatter.category] || [];
 
   return (
-    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F2F3F5", minHeight: "100vh", color: "#1a1a1a" }}>
+    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F7F4EE", minHeight: "100vh", color: "#1a1a1a" }}>
 
       {/* NAV */}
-      <nav style={{ background: "#0D0D0D", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #E8330A", position: "sticky" as const, top: 0, zIndex: 100 }}>
+      <nav style={{ background: "#1C1B18", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #B0492E", position: "sticky" as const, top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, marginRight: 28, textDecoration: "none" }}>
             <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
-            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#C79A4B" }}>Trip</span></span>
           </Link>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16 }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>Home</Link>
@@ -114,7 +114,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       </nav>
 
       {/* HERO */}
-      <div style={{ background: "linear-gradient(160deg,#0D0D0D 0%,#1a1a2e 100%)", padding: "40px 20px 36px" }}>
+      <div style={{ background: "linear-gradient(160deg,#1C1B18 0%,#2A2621 100%)", padding: "40px 20px 36px" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ display: "inline-block", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 999, background: cat.bg, color: cat.color, marginBottom: 16 }}>
             {cat.label}
@@ -147,17 +147,17 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
               .guide-content strong { color: #1a1a1a; font-weight: 700; }
               .guide-content hr { border: none; border-top: 2px solid #f0f0f0; margin: 32px 0; }
               .guide-content table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
-              .guide-content th { background: #E8330A; color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; }
+              .guide-content th { background: #B0492E; color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; }
               .guide-content td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; color: #444; }
               .guide-content tr:nth-child(even) td { background: #FAFAFA; }
-              .guide-content blockquote { border-left: 3px solid #E8330A; padding-left: 16px; margin: 20px 0; color: #666; font-style: italic; }
+              .guide-content blockquote { border-left: 3px solid #B0492E; padding-left: 16px; margin: 20px 0; color: #666; font-style: italic; }
             `}</style>
             <div className="guide-content" dangerouslySetInnerHTML={{ __html: content }} />
           </div>
 
           {/* BACK LINK */}
           <div style={{ marginTop: 20 }}>
-            <Link href="/travel" style={{ fontSize: 13, color: "#E8330A", fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <Link href="/travel" style={{ fontSize: 13, color: "#B0492E", fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
               ← Back to all guides
             </Link>
           </div>
@@ -184,12 +184,12 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           )}
 
           {/* FIND A MATCH */}
-          <div style={{ background: "linear-gradient(135deg,#E8330A,#F97316)", borderRadius: 14, padding: "18px", marginBottom: 14 }}>
+          <div style={{ background: "linear-gradient(135deg,#B0492E,#C79A4B)", borderRadius: 14, padding: "18px", marginBottom: 14 }}>
             <div style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 6 }}>Find your next match</div>
             <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", marginBottom: 14, lineHeight: 1.5 }}>
               Tickets, flights and hotels in one search. Prices from your city.
             </div>
-            <Link href="/" style={{ display: "block", background: "#fff", color: "#E8330A", padding: "10px", borderRadius: 8, fontSize: 13, fontWeight: 700, textAlign: "center" as const, textDecoration: "none" }}>
+            <Link href="/" style={{ display: "block", background: "#fff", color: "#B0492E", padding: "10px", borderRadius: 8, fontSize: 13, fontWeight: 700, textAlign: "center" as const, textDecoration: "none" }}>
               Browse matches →
             </Link>
           </div>

@@ -57,17 +57,17 @@ export default function WorldCup2026() {
     setSelectedAlerts(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]);
   };
 
-  const barColor = (c: string) => c === "low" ? "linear-gradient(90deg,#2E7D32,#43A047)" : c === "mid" ? "linear-gradient(90deg,#F57F17,#FBC02D)" : "linear-gradient(90deg,#E8330A,#EF5350)";
+  const barColor = (c: string) => c === "low" ? "linear-gradient(90deg,#2E7D32,#43A047)" : c === "mid" ? "linear-gradient(90deg,#F57F17,#FBC02D)" : "linear-gradient(90deg,#B0492E,#EF5350)";
 
   return (
-    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F2F3F5", minHeight: "100vh", color: "#1a1a1a" }}>
+    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F7F4EE", minHeight: "100vh", color: "#1a1a1a" }}>
 
       {/* NAV */}
-      <nav style={{ background: "#0D0D0D", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #E8330A", position: "sticky" as const, top: 0, zIndex: 100 }}>
+      <nav style={{ background: "#1C1B18", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #B0492E", position: "sticky" as const, top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center" }}>
           <div onClick={() => router.push("/")} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginRight: 28 }}>
             <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
-            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#C79A4B" }}>Trip</span></span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16 }}>
             <span onClick={() => router.push("/")} style={{ cursor: "pointer" }}>Home</span>
@@ -135,7 +135,7 @@ export default function WorldCup2026() {
                 🏟 Host cities
                 <span style={{ background: "#1565C0", color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999 }}>16 cities</span>
               </div>
-              <span style={{ fontSize: 12, color: "#E8330A", fontWeight: 600, cursor: "pointer" }}>View all →</span>
+              <span style={{ fontSize: 12, color: "#B0492E", fontWeight: 600, cursor: "pointer" }}>View all →</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))", gap: 10, marginBottom: 24 }}>
               {hostCities.slice(0, 6).map(c => (
@@ -154,7 +154,7 @@ export default function WorldCup2026() {
                       {c.final && <span style={{ background: "#EDE7F6", color: "#4527A0", fontSize: 9, fontWeight: 700, padding: "1px 6px", borderRadius: 999 }}>FINAL</span>}
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: "#E8330A" }}>{c.matches} matches</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: "#B0492E" }}>{c.matches} matches</span>
                       <span style={{ fontSize: 11, color: "#aaa" }}>from <strong style={{ color: "#1a1a1a" }}>{c.tripFrom}€</strong></span>
                     </div>
                   </div>
@@ -166,7 +166,7 @@ export default function WorldCup2026() {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a1a", textTransform: "uppercase" as const, letterSpacing: "0.07em", display: "flex", alignItems: "center", gap: 8 }}>
                 📊 Expected ticket prices
-                <span style={{ background: "#E8330A", color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999 }}>Historical data</span>
+                <span style={{ background: "#B0492E", color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999 }}>Historical data</span>
               </div>
             </div>
             <div style={{ background: "#fff", borderRadius: 14, overflow: "hidden", marginBottom: 24, border: "1px solid #ebebeb" }}>
@@ -210,9 +210,9 @@ export default function WorldCup2026() {
                     </div>
                   </div>
                   <div style={{ background: "#FFF5F3", border: "1px solid #FFD6CC", borderRadius: 7, padding: "5px 11px", flexShrink: 0, textAlign: "center" as const }}>
-                    <div style={{ fontSize: 10, color: "#E8330A" }}>🎟✈🏨</div>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "#E8330A" }}>est. {m.tripFrom}€</div>
-                    <div style={{ fontSize: 9, color: "#F97316" }}>full trip</div>
+                    <div style={{ fontSize: 10, color: "#B0492E" }}>🎟✈🏨</div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#B0492E" }}>est. {m.tripFrom}€</div>
+                    <div style={{ fontSize: 9, color: "#C79A4B" }}>full trip</div>
                   </div>
                   <div style={{ textAlign: "right" as const, flexShrink: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 800, color: "#1a1a1a" }}>TBC</div>
@@ -225,28 +225,28 @@ export default function WorldCup2026() {
             {/* GUIDES */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a1a", textTransform: "uppercase" as const, letterSpacing: "0.07em" }}>📖 World Cup 2026 travel guides</div>
-              <span style={{ fontSize: 12, color: "#E8330A", fontWeight: 600, cursor: "pointer" }}>All guides →</span>
+              <span style={{ fontSize: 12, color: "#B0492E", fontWeight: 600, cursor: "pointer" }}>All guides →</span>
             </div>
             <div style={{ background: "#fff", borderRadius: 14, overflow: "hidden", border: "1px solid #ebebeb" }}>
               <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr" }}>
                 <div style={{ padding: "18px 20px", borderRight: "1px solid #f0f0f0", cursor: "pointer" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#E8330A", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 8 }}>🌍 Complete Guide</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#B0492E", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 8 }}>🌍 Complete Guide</div>
                   <div style={{ fontSize: 15, fontWeight: 800, color: "#1a1a1a", lineHeight: 1.3, marginBottom: 8, letterSpacing: -0.3 }}>How to buy FIFA World Cup 2026 tickets — complete guide</div>
                   <div style={{ fontSize: 12, color: "#888", lineHeight: 1.6, marginBottom: 12 }}>When ticket sales open, how the ballot works, resale options and prices by phase.</div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span style={{ fontSize: 11, color: "#ccc" }}>14 min read</span>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: "#E8330A" }}>Read →</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#B0492E" }}>Read →</span>
                   </div>
                 </div>
                 <div style={{ padding: "16px", borderRight: "1px solid #f0f0f0", cursor: "pointer", display: "flex", flexDirection: "column" as const }}>
                   <div style={{ fontSize: 10, fontWeight: 700, background: "#E3F2FD", color: "#0D47A1", padding: "2px 8px", borderRadius: 999, display: "inline-block", marginBottom: 8 }}>✈ Flights</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a1a", lineHeight: 1.3, flex: 1, marginBottom: 8 }}>Flying to USA — when to book and cheapest routes</div>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#E8330A" }}>Read →</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#B0492E" }}>Read →</span>
                 </div>
                 <div style={{ padding: "16px", cursor: "pointer", display: "flex", flexDirection: "column" as const }}>
                   <div style={{ fontSize: 10, fontWeight: 700, background: "#E8F5E9", color: "#1B5E20", padding: "2px 8px", borderRadius: 999, display: "inline-block", marginBottom: 8 }}>🛡️ Insurance</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a1a", lineHeight: 1.3, flex: 1, marginBottom: 8 }}>Travel insurance for World Cup trips</div>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#E8330A" }}>Read →</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#B0492E" }}>Read →</span>
                 </div>
               </div>
               <div style={{ borderTop: "1px solid #f0f0f0", display: "grid", gridTemplateColumns: "repeat(3,1fr)" }}>
@@ -258,7 +258,7 @@ export default function WorldCup2026() {
                   <div key={i} style={{ padding: "14px 16px", borderRight: i < 2 ? "1px solid #f0f0f0" : "none", cursor: "pointer" }}>
                     <div style={{ fontSize: 10, fontWeight: 700, background: g.catBg, color: g.catColor, padding: "2px 8px", borderRadius: 999, display: "inline-block", marginBottom: 8 }}>{g.cat}</div>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a1a", lineHeight: 1.3, marginBottom: 8 }}>{g.title}</div>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: "#E8330A" }}>Read →</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: "#B0492E" }}>Read →</span>
                   </div>
                 ))}
               </div>
@@ -268,8 +268,8 @@ export default function WorldCup2026() {
 
           {/* SIDEBAR */}
           <div>
-            <div style={{ background: "#fff", borderRadius: 14, padding: "18px", marginBottom: 14, border: "2px solid #E8330A" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#E8330A", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 6 }}>🔔 Don't miss out</div>
+            <div style={{ background: "#fff", borderRadius: 14, padding: "18px", marginBottom: 14, border: "2px solid #B0492E" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#B0492E", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 6 }}>🔔 Don't miss out</div>
               <div style={{ fontSize: 15, fontWeight: 800, color: "#1a1a1a", marginBottom: 4, letterSpacing: -0.3 }}>Set World Cup alerts</div>
               <div style={{ fontSize: 12, color: "#aaa", marginBottom: 16, lineHeight: 1.5 }}>We'll alert you the moment ticket prices go live — and when they drop.</div>
               <input placeholder="your@email.com" value={alertEmail} onChange={e => setAlertEmail(e.target.value)} style={{ width: "100%", padding: "10px 13px", border: "1.5px solid #e8e8e8", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", marginBottom: 10 }} />
@@ -280,13 +280,13 @@ export default function WorldCup2026() {
                   { key: "opening", icon: "🎉", bg: "#E8F5E9", title: "Opening match", sub: "11 Jun · Mexico City" },
                   { key: "groups", icon: "⚽", bg: "#E3F2FD", title: "Any Group Stage match", sub: "Jun 11 – Jul 2" },
                 ].map(opt => (
-                  <div key={opt.key} onClick={() => toggleAlert(opt.key)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 9, border: `1.5px solid ${selectedAlerts.includes(opt.key) ? "#E8330A" : "#ebebeb"}`, background: selectedAlerts.includes(opt.key) ? "#FFF5F3" : "#fff", cursor: "pointer" }}>
+                  <div key={opt.key} onClick={() => toggleAlert(opt.key)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 9, border: `1.5px solid ${selectedAlerts.includes(opt.key) ? "#B0492E" : "#ebebeb"}`, background: selectedAlerts.includes(opt.key) ? "#FFF5F3" : "#fff", cursor: "pointer" }}>
                     <div style={{ width: 28, height: 28, borderRadius: 7, background: opt.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>{opt.icon}</div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a1a" }}>{opt.title}</div>
                       <div style={{ fontSize: 10, color: "#aaa" }}>{opt.sub}</div>
                     </div>
-                    <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${selectedAlerts.includes(opt.key) ? "#E8330A" : "#ddd"}`, background: selectedAlerts.includes(opt.key) ? "#E8330A" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#fff" }}>
+                    <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${selectedAlerts.includes(opt.key) ? "#B0492E" : "#ddd"}`, background: selectedAlerts.includes(opt.key) ? "#B0492E" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#fff" }}>
                       {selectedAlerts.includes(opt.key) ? "✓" : ""}
                     </div>
                   </div>
@@ -298,14 +298,14 @@ export default function WorldCup2026() {
                   <div style={{ fontSize: 11, color: "#aaa", marginTop: 4 }}>We'll notify {alertEmail}</div>
                 </div>
               ) : (
-                <button onClick={() => alertEmail && setAlertSet(true)} style={{ width: "100%", padding: "12px", background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Set alerts — free</button>
+                <button onClick={() => alertEmail && setAlertSet(true)} style={{ width: "100%", padding: "12px", background: "linear-gradient(135deg,#B0492E,#C79A4B)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Set alerts — free</button>
               )}
             </div>
 
             <div style={{ background: "linear-gradient(135deg,#050510,#0a1628)", borderRadius: 14, padding: "18px", marginBottom: 14 }}>
               <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase" as const, letterSpacing: "0.05em", marginBottom: 14 }}>By the numbers</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                {[["48", "Teams", "#60a5fa"], ["104", "Matches", "#60a5fa"], ["16", "Cities", "#F97316"], ["3", "Countries", "#F97316"], ["39", "Days", "#fff"], ["5M+", "Tickets", "#fff"]].map(([num, lbl, color]) => (
+                {[["48", "Teams", "#60a5fa"], ["104", "Matches", "#60a5fa"], ["16", "Cities", "#C79A4B"], ["3", "Countries", "#C79A4B"], ["39", "Days", "#fff"], ["5M+", "Tickets", "#fff"]].map(([num, lbl, color]) => (
                   <div key={lbl} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "12px", textAlign: "center" as const }}>
                     <div style={{ fontSize: 22, fontWeight: 800, color, letterSpacing: -0.5, marginBottom: 2 }}>{num}</div>
                     <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>{lbl}</div>

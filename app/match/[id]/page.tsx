@@ -143,19 +143,19 @@ export default function MatchPage() {
   };
 
   if (!match) return (
-    <div style={{ background: "#F2F3F5", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter,sans-serif", color: "#aaa", fontSize: 14 }}>
+    <div style={{ background: "#F7F4EE", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter,sans-serif", color: "#aaa", fontSize: 14 }}>
       Loading match...
     </div>
   );
 
   return (
-    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F2F3F5", minHeight: "100vh", color: "#1a1a1a" }}>
+    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F7F4EE", minHeight: "100vh", color: "#1a1a1a" }}>
 
-      <nav style={{ background: "#0D0D0D", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #E8330A", position: "sticky" as const, top: 0, zIndex: 100 }}>
+      <nav style={{ background: "#1C1B18", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #B0492E", position: "sticky" as const, top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center" }}>
           <div onClick={() => router.push("/")} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginRight: 28 }}>
             <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
-            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Fan<span style={{ color: "#C79A4B" }}>Trip</span></span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16, flexWrap: "wrap" as const }}>
             <span onClick={() => router.push("/")} style={{ cursor: "pointer" }}>Home</span>
@@ -168,11 +168,11 @@ export default function MatchPage() {
         </div>
       </nav>
 
-      <div style={{ background: "linear-gradient(160deg,#0D0D0D 0%,#1a1a2e 60%,#16213e 100%)", padding: "28px 20px 0", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: -80, right: -80, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle,rgba(232,51,10,0.1) 0%,transparent 70%)", pointerEvents: "none" as const }} />
+      <div style={{ background: "linear-gradient(160deg,#1C1B18 0%,#1a1a2e 60%,#16213e 100%)", padding: "28px 20px 0", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: -80, right: -80, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle,rgba(176,73,46,0.1) 0%,transparent 70%)", pointerEvents: "none" as const }} />
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, flexWrap: "wrap" as const }}>
-            <span style={{ background: "rgba(232,51,10,0.15)", border: "1px solid rgba(232,51,10,0.3)", borderRadius: 999, padding: "3px 10px", fontSize: 11, color: "#f87171", fontWeight: 700 }}>🏆 {match.league}</span>
+            <span style={{ background: "rgba(176,73,46,0.15)", border: "1px solid rgba(176,73,46,0.3)", borderRadius: 999, padding: "3px 10px", fontSize: 11, color: "#f87171", fontWeight: 700 }}>🏆 {match.league}</span>
           </div>
           <h1 style={{ fontSize: "clamp(22px,4vw,34px)", fontWeight: 800, color: "#fff", letterSpacing: -1, marginBottom: 8 }}>
             {match.home} <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 400 }}>vs</span> {match.away}
@@ -189,7 +189,7 @@ export default function MatchPage() {
           </div>
           <div style={{ display: "flex", borderTop: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" as const }}>
             {[["trip", "Full Trip"], ["tickets", "Tickets only"], ["history", "Price History"], ["alerts", "Get deals — free"]].map(([tabId, label]) => (
-              <button key={tabId} onClick={() => setActiveTab(tabId)} style={{ padding: "13px 18px", fontSize: 13, fontWeight: 600, background: "none", border: "none", borderBottom: activeTab === tabId ? "2px solid #E8330A" : "2px solid transparent", color: activeTab === tabId ? "#fff" : "rgba(255,255,255,0.45)", cursor: "pointer", marginBottom: -1, fontFamily: "inherit", whiteSpace: "nowrap" as const }}>{label}</button>
+              <button key={tabId} onClick={() => setActiveTab(tabId)} style={{ padding: "13px 18px", fontSize: 13, fontWeight: 600, background: "none", border: "none", borderBottom: activeTab === tabId ? "2px solid #B0492E" : "2px solid transparent", color: activeTab === tabId ? "#fff" : "rgba(255,255,255,0.45)", cursor: "pointer", marginBottom: -1, fontFamily: "inherit", whiteSpace: "nowrap" as const }}>{label}</button>
             ))}
           </div>
         </div>
@@ -199,11 +199,11 @@ export default function MatchPage() {
         <div className="match-grid" style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
           <div>
 
-            <div style={{ background: "#fff", borderRadius: 14, border: "2px solid #E8330A", padding: "20px 24px", marginBottom: 16, boxShadow: "0 4px 20px rgba(232,51,10,0.1)", flexWrap: "wrap" as const, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+            <div style={{ background: "#fff", borderRadius: 14, border: "2px solid #B0492E", padding: "20px 24px", marginBottom: 16, boxShadow: "0 4px 20px rgba(176,73,46,0.1)", flexWrap: "wrap" as const, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
               <div>
                 <div style={{ fontSize: 11, color: "#999", marginBottom: 5, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" as const }}>
                   Best combination · 1 person · 2 nights
-                  <span style={{ background: "#FFF5F3", color: "#E8330A", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999 }}>📍 from {departureCity}</span>
+                  <span style={{ background: "#FFF5F3", color: "#B0492E", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999 }}>📍 from {departureCity}</span>
                 </div>
                 <div style={{ fontSize: 40, fontWeight: 800, color: "#1a1a1a", letterSpacing: -2, lineHeight: 1, marginBottom: 4 }}>{totalPrice}€</div>
                 <div style={{ fontSize: 12, color: "#aaa", display: "flex", gap: 6, flexWrap: "wrap" as const }}>
@@ -215,8 +215,8 @@ export default function MatchPage() {
                 <div style={{ fontSize: 12, color: "#2E7D32", fontWeight: 600, marginTop: 4 }}>✓ Saves ~100€ vs booking separately</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, alignItems: "flex-end" }}>
-                <button onClick={handleBookTrip} style={{ background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", padding: "14px 28px", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Book this trip →</button>
-                <button onClick={() => setActiveTab("alerts")} style={{ background: "transparent", border: "1.5px solid #E8330A", color: "#E8330A", padding: "8px 18px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>🔔 Get the best deals</button>
+                <button onClick={handleBookTrip} style={{ background: "linear-gradient(135deg,#B0492E,#C79A4B)", border: "none", color: "#fff", padding: "14px 28px", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Book this trip →</button>
+                <button onClick={() => setActiveTab("alerts")} style={{ background: "transparent", border: "1.5px solid #B0492E", color: "#B0492E", padding: "8px 18px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>🔔 Get the best deals</button>
               </div>
             </div>
 
@@ -239,7 +239,7 @@ export default function MatchPage() {
                     <div style={{ textAlign: "right" as const }}>
                       {t.oldPrice && <div style={{ fontSize: 11, color: "#ccc", textDecoration: "line-through" }}>{t.oldPrice}€</div>}
                       <div style={{ fontSize: 18, fontWeight: 800 }}>{t.price}€</div>
-                      <a href={t.url} target="_blank" rel="noopener noreferrer" style={{ marginTop: 6, padding: "5px 12px", fontSize: 11, fontWeight: 600, borderRadius: 7, background: i === 0 ? "#E8330A" : "transparent", border: i === 0 ? "none" : "1.5px solid #e0e0e0", color: i === 0 ? "#fff" : "#666", textDecoration: "none", display: "inline-block" }}>Buy on {t.platform} →</a>
+                      <a href={t.url} target="_blank" rel="noopener noreferrer" style={{ marginTop: 6, padding: "5px 12px", fontSize: 11, fontWeight: 600, borderRadius: 7, background: i === 0 ? "#B0492E" : "transparent", border: i === 0 ? "none" : "1.5px solid #e0e0e0", color: i === 0 ? "#fff" : "#666", textDecoration: "none", display: "inline-block" }}>Buy on {t.platform} →</a>
                     </div>
                   </div>
                 ))}
@@ -359,8 +359,8 @@ export default function MatchPage() {
                 <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Ticket price history</div>
                 <div style={{ fontSize: 11, color: "#aaa", marginBottom: 16 }}>Last 4 weeks</div>
                 <svg width="100%" height="80" viewBox="0 0 600 80" preserveAspectRatio="none">
-                  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#E8330A" stopOpacity="0.15"/><stop offset="100%" stopColor="#E8330A" stopOpacity="0"/></linearGradient></defs>
-                  <path d="M0,40 L75,35 L150,50 L225,55 L300,42 L375,62 L450,45 L525,28 L600,18" fill="none" stroke="#E8330A" strokeWidth="2"/>
+                  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#B0492E" stopOpacity="0.15"/><stop offset="100%" stopColor="#B0492E" stopOpacity="0"/></linearGradient></defs>
+                  <path d="M0,40 L75,35 L150,50 L225,55 L300,42 L375,62 L450,45 L525,28 L600,18" fill="none" stroke="#B0492E" strokeWidth="2"/>
                   <path d="M0,40 L75,35 L150,50 L225,55 L300,42 L375,62 L450,45 L525,28 L600,18 L600,80 L0,80Z" fill="url(#g)"/>
                 </svg>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "#ccc", marginTop: 8 }}>
@@ -395,7 +395,7 @@ export default function MatchPage() {
                         <input value={alertEmail} onChange={e => setAlertEmail(e.target.value)} placeholder="your@email.com" style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e8e8e8", borderRadius: 8, fontSize: 14, outline: "none", fontFamily: "inherit" }} />
                       </div>
                     </div>
-                    <button onClick={handleAlertSubmit} style={{ width: "100%", padding: "13px", background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Get deals — free</button>
+                    <button onClick={handleAlertSubmit} style={{ width: "100%", padding: "13px", background: "linear-gradient(135deg,#B0492E,#C79A4B)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Get deals — free</button>
                   </>
                 )}
               </div>
@@ -404,12 +404,12 @@ export default function MatchPage() {
           </div>
 
           <div>
-            <div style={{ background: "#fff", borderRadius: 14, padding: "18px", marginBottom: 14, border: "2px solid #E8330A" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#E8330A", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 6 }}>🔔 Get deals first</div>
+            <div style={{ background: "#fff", borderRadius: 14, padding: "18px", marginBottom: 14, border: "2px solid #B0492E" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#B0492E", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 6 }}>🔔 Get deals first</div>
               <div style={{ fontSize: 15, fontWeight: 800, color: "#1a1a1a", marginBottom: 4 }}>Be first to know when prices drop</div>
               <div style={{ fontSize: 12, color: "#aaa", marginBottom: 14, lineHeight: 1.5 }}>Join fans already tracking this match.</div>
               <input placeholder="your@email.com" style={{ width: "100%", padding: "10px 13px", border: "1.5px solid #e8e8e8", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", marginBottom: 10 }} />
-              <button style={{ width: "100%", padding: "12px", background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Get deals — free</button>
+              <button style={{ width: "100%", padding: "12px", background: "linear-gradient(135deg,#B0492E,#C79A4B)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Get deals — free</button>
             </div>
 
             <div style={{ background: "#fff", borderRadius: 14, padding: "16px 18px", marginBottom: 14, border: "1px solid #ebebeb" }}>

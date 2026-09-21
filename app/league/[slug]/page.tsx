@@ -29,7 +29,7 @@ export default function LeaguePage() {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
-  const league = leagueInfo[slug] || { name: "League", emoji: "⚽", color: "#1a1a2e", code: "" };
+  const league = leagueInfo[slug] || { name: "League", emoji: "⚽", color: "#2A2621", code: "" };
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
@@ -49,7 +49,7 @@ export default function LeaguePage() {
   }, [league.name]);
 
   const s: any = {
-    nav: { background: "#0D0D0D", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #E8330A", position: "sticky" as const, top: 0, zIndex: 100 },
+    nav: { background: "#1C1B18", height: 56, display: "flex", alignItems: "center", padding: "0 20px", borderBottom: "1.5px solid #B0492E", position: "sticky" as const, top: 0, zIndex: 100 },
     navInner: { maxWidth: 1200, margin: "0 auto", width: "100%", display: "flex", alignItems: "center" },
     logo: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" },
     logoMark: { width: 30, height: 30, borderRadius: 8, overflow: "hidden" as const },
@@ -57,13 +57,13 @@ export default function LeaguePage() {
   };
 
   return (
-    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F2F3F5", minHeight: "100vh", color: "#1a1a1a" }}>
+    <main style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", background: "#F7F4EE", minHeight: "100vh", color: "#1a1a1a" }}>
 
       <nav style={s.nav}>
         <div style={s.navInner}>
           <div onClick={() => router.push("/")} style={s.logo}>
             <img src="/fantrip-logo.png" alt="FanTrip" style={{ width: 30, height: 30, borderRadius: 8, objectFit: "cover" as const }} />
-            <span style={s.logoText}>Fan<span style={{ color: "#F97316" }}>Trip</span></span>
+            <span style={s.logoText}>Fan<span style={{ color: "#C79A4B" }}>Trip</span></span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.4)", marginLeft: "auto", marginRight: 16 }}>
             <span onClick={() => router.push("/")} style={{ cursor: "pointer" }}>Home</span>
@@ -75,7 +75,7 @@ export default function LeaguePage() {
       </nav>
 
       {/* HERO */}
-      <div style={{ background: `linear-gradient(160deg,#0D0D0D 0%,${league.color} 100%)`, padding: "32px 20px 0", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: `linear-gradient(160deg,#1C1B18 0%,${league.color} 100%)`, padding: "32px 20px 0", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -80, right: -80, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle,rgba(255,255,255,0.05) 0%,transparent 70%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 20, flexWrap: "wrap" as const }}>
@@ -103,7 +103,7 @@ export default function LeaguePage() {
           {/* LEAGUE SELECTOR */}
           <div style={{ display: "flex", borderTop: "1px solid rgba(255,255,255,0.08)", overflowX: "auto" }}>
             {Object.entries(leagueInfo).map(([s2, l]) => (
-              <div key={s2} onClick={() => router.push(`/league/${s2}`)} style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: s2 === slug ? "#fff" : "rgba(255,255,255,0.45)", cursor: "pointer", borderBottom: s2 === slug ? "2px solid #E8330A" : "2px solid transparent", marginBottom: -1, whiteSpace: "nowrap" as const }}>
+              <div key={s2} onClick={() => router.push(`/league/${s2}`)} style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: s2 === slug ? "#fff" : "rgba(255,255,255,0.45)", cursor: "pointer", borderBottom: s2 === slug ? "2px solid #B0492E" : "2px solid transparent", marginBottom: -1, whiteSpace: "nowrap" as const }}>
                 {l.emoji} {l.name}
               </div>
             ))}
@@ -152,7 +152,7 @@ export default function LeaguePage() {
                       <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", textTransform: "uppercase" as const, letterSpacing: "0.06em", textAlign: "center" as const, marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid #f0f0f0" }}>Semi Finals · Now</div>
                       <div style={{ height: 20 }} />
                       {bracket.semis.map((m, i) => (
-                        <div key={i} style={{ background: "#FFF5F3", borderRadius: 10, border: "1.5px solid #E8330A", overflow: "hidden", marginBottom: i === 0 ? 32 : 0, cursor: "pointer" }} onClick={() => router.push(`/league/champions-league`)}>
+                        <div key={i} style={{ background: "#FFF5F3", borderRadius: 10, border: "1.5px solid #B0492E", overflow: "hidden", marginBottom: i === 0 ? 32 : 0, cursor: "pointer" }} onClick={() => router.push(`/league/champions-league`)}>
                           <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", borderBottom: "1px solid #FFE5DC" }}>
                             <span style={{ fontSize: 11 }}>{m.homeFlag}</span>
                             <span style={{ fontSize: 11, fontWeight: 700, color: "#1a1a1a", flex: 1 }}>{m.home}</span>
@@ -164,8 +164,8 @@ export default function LeaguePage() {
                             <span style={{ fontSize: 11, color: "#aaa" }}>—</span>
                           </div>
                           <div style={{ padding: "4px 10px", borderTop: "1px solid #FFE5DC", display: "flex", justifyContent: "space-between" }}>
-                            <span style={{ fontSize: 9, color: "#E8330A", fontWeight: 600 }}>🎟 from {m.price}€</span>
-                            <span style={{ fontSize: 9, color: "#F97316", fontWeight: 600 }}>trip {m.tripFrom}€</span>
+                            <span style={{ fontSize: 9, color: "#B0492E", fontWeight: 600 }}>🎟 from {m.price}€</span>
+                            <span style={{ fontSize: 9, color: "#C79A4B", fontWeight: 600 }}>trip {m.tripFrom}€</span>
                           </div>
                         </div>
                       ))}
@@ -187,8 +187,8 @@ export default function LeaguePage() {
                           <span style={{ fontSize: 11, color: "#ddd" }}>—</span>
                         </div>
                         <div style={{ padding: "4px 10px", borderTop: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ fontSize: 9, color: "#E8330A", fontWeight: 600 }}>🎟 est. from 210€</span>
-                          <span style={{ fontSize: 9, color: "#F97316", fontWeight: 600 }}>trip 384€</span>
+                          <span style={{ fontSize: 9, color: "#B0492E", fontWeight: 600 }}>🎟 est. from 210€</span>
+                          <span style={{ fontSize: 9, color: "#C79A4B", fontWeight: 600 }}>trip 384€</span>
                         </div>
                       </div>
                     </div>
@@ -218,9 +218,9 @@ export default function LeaguePage() {
                     <div style={{ fontSize: 11, color: "#aaa" }}>{m.date} · {m.venue || "TBC"}</div>
                   </div>
                   <div style={{ background: "#FFF5F3", border: "1px solid #FFD6CC", borderRadius: 7, padding: "5px 11px", flexShrink: 0, textAlign: "center" as const }}>
-                    <div style={{ fontSize: 10, color: "#E8330A" }}>🎟✈🏨</div>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "#E8330A" }}>from {m.tripFrom}€</div>
-                    <div style={{ fontSize: 9, color: "#F97316" }}>full trip</div>
+                    <div style={{ fontSize: 10, color: "#B0492E" }}>🎟✈🏨</div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#B0492E" }}>from {m.tripFrom}€</div>
+                    <div style={{ fontSize: 9, color: "#C79A4B" }}>full trip</div>
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0, minWidth: 80 }}>
                     <div style={{ fontSize: 15, fontWeight: 800, color: "#1a1a1a" }}>{m.price}€</div>
@@ -236,13 +236,13 @@ export default function LeaguePage() {
 
           {/* SIDEBAR */}
           <div>
-            <div style={{ background: "#fff", borderRadius: 14, padding: "18px", marginBottom: 14, border: "2px solid #E8330A" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#E8330A", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 6 }}>🔔 Price alerts</div>
+            <div style={{ background: "#fff", borderRadius: 14, padding: "18px", marginBottom: 14, border: "2px solid #B0492E" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#B0492E", textTransform: "uppercase" as const, letterSpacing: 0.4, marginBottom: 6 }}>🔔 Price alerts</div>
               <div style={{ fontSize: 15, fontWeight: 800, color: "#1a1a1a", marginBottom: 4 }}>Alert me for {league.name}</div>
               <div style={{ fontSize: 12, color: "#aaa", marginBottom: 14, lineHeight: 1.5 }}>Get notified when ticket or trip prices drop for any {league.name} match.</div>
               <input placeholder="your@email.com" style={{ width: "100%", padding: "10px 13px", border: "1.5px solid #e8e8e8", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", marginBottom: 10 }} />
               <input defaultValue="Madrid (MAD)" style={{ width: "100%", padding: "10px 13px", border: "1.5px solid #e8e8e8", borderRadius: 8, fontSize: 13, fontFamily: "inherit", outline: "none", marginBottom: 10 }} />
-              <button style={{ width: "100%", padding: "12px", background: "linear-gradient(135deg,#E8330A,#F97316)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Set alerts — free</button>
+              <button style={{ width: "100%", padding: "12px", background: "linear-gradient(135deg,#B0492E,#C79A4B)", border: "none", color: "#fff", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Set alerts — free</button>
             </div>
 
             {matches.length > 0 && (
@@ -256,7 +256,7 @@ export default function LeaguePage() {
                       <div style={{ fontSize: 10, color: "#aaa" }}>{m.date}</div>
                     </div>
                     <div style={{ textAlign: "right", flexShrink: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: "#E8330A" }}>{m.tripFrom}€</div>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: "#B0492E" }}>{m.tripFrom}€</div>
                       <div style={{ fontSize: 9, color: "#aaa" }}>full trip</div>
                     </div>
                   </div>
