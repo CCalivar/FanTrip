@@ -50,7 +50,6 @@ export default function Home() {
               <div key={label} onClick={() => router.push(path)} style={{ padding: "0 14px", fontSize: 13, fontWeight: 500, color: label === "Matches" ? "#fff" : "rgba(255,255,255,0.5)", display: "flex", alignItems: "center", cursor: "pointer", height: "100%", borderBottom: label === "Matches" ? `2px solid ${C.accent}` : "2px solid transparent" }}>{label}</div>
             ))}
             <div onClick={() => router.push("/league/champions-league")} style={{ padding: "0 14px", fontSize: 13, fontWeight: 500, color: "#D9C58A", display: "flex", alignItems: "center", cursor: "pointer", height: "100%", borderBottom: "2px solid transparent" }}>🏆 Champions League</div>
-            <div onClick={() => router.push("/world-cup-2026")} style={{ padding: "0 14px", fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.4)", display: "flex", alignItems: "center", cursor: "pointer", height: "100%", borderBottom: "2px solid transparent" }}>🌍 World Cup 2026</div>
           </div>
         </div>
       </nav>
@@ -92,7 +91,7 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" as const, alignItems: "center" }}>
             <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>Popular:</span>
-            {[["🔥 El Clasico", null], ["🏆 UCL Final: Madrid", "/league/champions-league"], ["⚡ Man Derby", null], ["🌍 World Cup", "/world-cup-2026"]].map(([h, path]) => (
+            {[["🔥 El Clasico", null], ["🏆 UCL Final: Madrid", "/league/champions-league"], ["⚡ Man Derby", null]].map(([h, path]) => (
               <div key={h as string} onClick={() => path && router.push(path)} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 999, padding: "4px 12px", fontSize: 11, color: "rgba(255,255,255,0.6)", cursor: path ? "pointer" : "default" }}>{h}</div>
             ))}
           </div>
@@ -233,7 +232,7 @@ export default function Home() {
               {[
                 { title: "Leagues", links: [["Champions League", "/league/champions-league"], ["Premier League", "/league/premier-league"], ["LaLiga", "/league/laliga"], ["Bundesliga", "/league/bundesliga"], ["Serie A", "/league/serie-a"], ["Brasileirão", "/league/brasileirao"]] },
                 { title: "Guides", links: [["How to buy tickets", "/guides/how-to-not-get-locked-out-of-a-football-match"], ["Best eSIMs for travel", "/guides/best-esim-premier-league-away-games"], ["Travel insurance", "/guides/travel-insurance-football-away-trips"], ["Price analysis", "/guides/when-do-football-ticket-prices-drop"]] },
-                { title: "FanTrip", links: [["World Cup 2026", "/world-cup-2026"], ["Travel & Guides", "/travel"], ["About", "/"], ["Affiliate disclosure", "/"]] },
+                { title: "FanTrip", links: [["Travel & Guides", "/travel"], ["About", "/"], ["Affiliate disclosure", "/"]] },
               ].map(col => (
                 <div key={col.title} style={{ flex: "1 1 120px" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase" as const, letterSpacing: "0.07em", marginBottom: 12 }}>{col.title}</div>

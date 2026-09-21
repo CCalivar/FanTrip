@@ -35,7 +35,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "hourly", priority: 1 },
     { url: `${SITE_URL}/guides`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${SITE_URL}/world-cup-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
   ];
 
   const leagueRoutes: MetadataRoute.Sitemap = LEAGUE_SLUGS.map((slug) => ({
