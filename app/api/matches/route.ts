@@ -99,6 +99,7 @@ export async function GET() {
         away: m.awayTeam?.shortName || m.awayTeam?.name || "TBD",
         league: comp.name,
         date: new Date(m.utcDate).toLocaleDateString("en-GB", { day: "numeric", month: "short" }),
+        stage: m.stage || null,
         venue: m.venue || "TBC",
         // The Champions League final's host city changes every season (it
         // was hardcoded to "Munich" — that was the 2024/25 final's venue,

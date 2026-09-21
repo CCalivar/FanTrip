@@ -12,17 +12,16 @@ const leagueInfo: Record<string, any> = {
   "brasileirao": { name: "Brasileirão", emoji: "🇧🇷", color: "#2B4239", code: "BSA" },
 };
 
-const bracket = {
-  quarters: [
-    { home: "Bayern", homeFlag: "🇩🇪", away: "Atleti", awayFlag: "🇪🇸", homeScore: 3, awayScore: 1, winner: "home" },
-    { home: "PSG", homeFlag: "🇫🇷", away: "Aston Villa", awayFlag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", homeScore: 2, awayScore: 0, winner: "home" },
-    { home: "Arsenal", homeFlag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", away: "Real Madrid", awayFlag: "🇪🇸", homeScore: 4, awayScore: 2, winner: "home" },
-    { home: "Barcelona", homeFlag: "🇪🇸", away: "Dortmund", awayFlag: "🇩🇪", homeScore: 3, awayScore: 2, winner: "home" },
-  ],
-  semis: [
-    { home: "Bayern", homeFlag: "🇩🇪", away: "PSG", awayFlag: "🇫🇷", price: 89, tripFrom: 294 },
-    { home: "Arsenal", homeFlag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", away: "Barcelona", awayFlag: "🇪🇸", price: 84, tripFrom: 334 },
-  ],
+// Rondas eliminatorias de Champions, en orden. El cuadro se arma con datos
+// reales de la API (campo `stage` de football-data) cuando existen; hasta el
+// sorteo de octavos (previsto feb 2027) la competición está en fase de liga y
+// no hay cuadro que mostrar.
+const KO_ORDER = ["LAST_16", "QUARTER_FINALS", "SEMI_FINALS", "FINAL"];
+const KO_LABEL: Record<string, string> = {
+  LAST_16: "Octavos",
+  QUARTER_FINALS: "Cuartos",
+  SEMI_FINALS: "Semifinales",
+  FINAL: "Final",
 };
 
 export default function LeaguePage() {
@@ -116,87 +115,43 @@ export default function LeaguePage() {
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 300px", gap: 20 }}>
           <div>
 
-            {/* BRACKET — solo UCL */}
-            {isUCL && (
-              <div style={{ background: "#fff", borderRadius: 14, overflow: "hidden", marginBottom: 16, border: "1px solid #ebebeb" }}>
-                <div style={{ padding: "14px 18px", borderBottom: "1px solid #f0f0f0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a", display: "flex", alignItems: "center", gap: 8 }}>
-                    🏆 Knockout bracket
-                    <span style={{ background: "#1565C0", color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999 }}>Semi Finals</span>
+            {/* BRACKET — solo UCL. Datos reales de la API; placeholder honesto
+                mientras la competición esté en fase de liga (sin eliminatorias). */}
+            {isUCL && (() => {
+              const knockout = matches.filter((m) => KO_ORDER.includes(m.stage));
+              if (knockout.length === 0) {
+                return (
+                  <div style={{ background: "#fff", borderRadius: 14, marginBottom: 16, border: "1px solid #ebebeb", padding: "18px 20px" }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a", display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>🏆 Cuadro de eliminatorias</div>
+                    <div style={{ fontSize: 12.5, color: "#8a8a8a", lineHeight: 1.55 }}>
+                      La Champions está en <strong style={{ color: "#1a1a1a" }}>fase de liga</strong>. El cuadro se mostrará automáticamente en cuanto se sorteen los cruces (previsto febrero 2027). <strong style={{ color: "#B0492E" }}>Final: mayo 2027 · Estadio Metropolitano, Madrid.</strong>
+                    </div>
                   </div>
-                </div>
-                <div style={{ padding: "16px", overflowX: "auto" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3,190px)", gap: 0, minWidth: 570 }}>
-
-                    {/* QUARTERS */}
-                    <div style={{ padding: "0 8px" }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", textTransform: "uppercase" as const, letterSpacing: "0.06em", textAlign: "center" as const, marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid #f0f0f0" }}>Quarter Finals</div>
-                      {bracket.quarters.map((m, i) => (
-                        <div key={i} style={{ background: "#F8F8F8", borderRadius: 10, border: "1.5px solid #ebebeb", overflow: "hidden", marginBottom: 8 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 10px", borderBottom: "1px solid #f0f0f0", background: m.winner === "home" ? "#F1F8E9" : "transparent" }}>
-                            <span style={{ fontSize: 11 }}>{m.homeFlag}</span>
-                            <span style={{ fontSize: 11, fontWeight: 600, color: m.winner === "home" ? "#1B5E20" : "#1a1a1a", flex: 1 }}>{m.home}</span>
-                            <span style={{ fontSize: 12, fontWeight: 800, color: m.winner === "home" ? "#1B5E20" : "#1a1a1a" }}>{m.homeScore}</span>
-                          </div>
-                          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 10px", background: m.winner === "away" ? "#F1F8E9" : "transparent" }}>
-                            <span style={{ fontSize: 11 }}>{m.awayFlag}</span>
-                            <span style={{ fontSize: 11, fontWeight: 600, color: m.winner === "away" ? "#1B5E20" : "#1a1a1a", flex: 1 }}>{m.away}</span>
-                            <span style={{ fontSize: 12, fontWeight: 800, color: m.winner === "away" ? "#1B5E20" : "#1a1a1a" }}>{m.awayScore}</span>
-                          </div>
+                );
+              }
+              const stages = KO_ORDER.filter((st) => knockout.some((m) => m.stage === st));
+              return (
+                <div style={{ background: "#fff", borderRadius: 14, overflow: "hidden", marginBottom: 16, border: "1px solid #ebebeb" }}>
+                  <div style={{ padding: "14px 18px", borderBottom: "1px solid #f0f0f0", fontSize: 14, fontWeight: 700, color: "#1a1a1a", display: "flex", alignItems: "center", gap: 8 }}>🏆 Cuadro de eliminatorias</div>
+                  <div style={{ padding: "16px", overflowX: "auto" as const }}>
+                    <div style={{ display: "flex", gap: 12, minWidth: stages.length * 200 }}>
+                      {stages.map((st) => (
+                        <div key={st} style={{ minWidth: 190, flex: "0 0 auto" }}>
+                          <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", textTransform: "uppercase" as const, letterSpacing: "0.06em", textAlign: "center" as const, marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid #f0f0f0" }}>{KO_LABEL[st]}</div>
+                          {knockout.filter((m) => m.stage === st).map((m) => (
+                            <div key={m.id} onClick={() => router.push(`/match/${m.id}`)} style={{ background: "#F8F8F8", borderRadius: 10, border: "1.5px solid #ebebeb", overflow: "hidden", marginBottom: 8, cursor: "pointer" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", borderBottom: "1px solid #f0f0f0", fontSize: 11, fontWeight: 700, color: "#1a1a1a" }}>{m.home}</div>
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", fontSize: 11, fontWeight: 700, color: "#1a1a1a" }}>{m.away}</div>
+                              <div style={{ padding: "4px 10px", borderTop: "1px solid #f0f0f0", fontSize: 9, color: "#aaa" }}>{m.date}{m.venue && m.venue !== "TBC" ? ` · ${m.venue}` : ""}</div>
+                            </div>
+                          ))}
                         </div>
                       ))}
                     </div>
-
-                    {/* SEMIS */}
-                    <div style={{ padding: "0 8px" }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", textTransform: "uppercase" as const, letterSpacing: "0.06em", textAlign: "center" as const, marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid #f0f0f0" }}>Semi Finals · Now</div>
-                      <div style={{ height: 20 }} />
-                      {bracket.semis.map((m, i) => (
-                        <div key={i} style={{ background: "#FFF5F3", borderRadius: 10, border: "1.5px solid #B0492E", overflow: "hidden", marginBottom: i === 0 ? 32 : 0, cursor: "pointer" }} onClick={() => router.push(`/league/champions-league`)}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", borderBottom: "1px solid #FFE5DC" }}>
-                            <span style={{ fontSize: 11 }}>{m.homeFlag}</span>
-                            <span style={{ fontSize: 11, fontWeight: 700, color: "#1a1a1a", flex: 1 }}>{m.home}</span>
-                            <span style={{ fontSize: 11, color: "#aaa" }}>—</span>
-                          </div>
-                          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px" }}>
-                            <span style={{ fontSize: 11 }}>{m.awayFlag}</span>
-                            <span style={{ fontSize: 11, fontWeight: 700, color: "#1a1a1a", flex: 1 }}>{m.away}</span>
-                            <span style={{ fontSize: 11, color: "#aaa" }}>—</span>
-                          </div>
-                          <div style={{ padding: "4px 10px", borderTop: "1px solid #FFE5DC", display: "flex", justifyContent: "space-between" }}>
-                            <span style={{ fontSize: 9, color: "#B0492E", fontWeight: 600 }}>🎟 from {m.price}€</span>
-                            <span style={{ fontSize: 9, color: "#C79A4B", fontWeight: 600 }}>trip {m.tripFrom}€</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* FINAL */}
-                    <div style={{ padding: "0 8px" }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: "#aaa", textTransform: "uppercase" as const, letterSpacing: "0.06em", textAlign: "center" as const, marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid #f0f0f0" }}>Final · 31 May</div>
-                      <div style={{ height: 56 }} />
-                      <div style={{ background: "#F8F8F8", borderRadius: 10, border: "1.5px solid #ebebeb", overflow: "hidden", opacity: 0.6 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", borderBottom: "1px solid #f0f0f0" }}>
-                          <span style={{ fontSize: 11 }}>❓</span>
-                          <span style={{ fontSize: 11, fontWeight: 600, color: "#aaa", flex: 1 }}>TBD</span>
-                          <span style={{ fontSize: 11, color: "#ddd" }}>—</span>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px" }}>
-                          <span style={{ fontSize: 11 }}>❓</span>
-                          <span style={{ fontSize: 11, fontWeight: 600, color: "#aaa", flex: 1 }}>TBD</span>
-                          <span style={{ fontSize: 11, color: "#ddd" }}>—</span>
-                        </div>
-                        <div style={{ padding: "4px 10px", borderTop: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ fontSize: 9, color: "#B0492E", fontWeight: 600 }}>🎟 est. from 210€</span>
-                          <span style={{ fontSize: 9, color: "#C79A4B", fontWeight: 600 }}>trip 384€</span>
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* MATCHES */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
