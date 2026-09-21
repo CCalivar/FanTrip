@@ -91,7 +91,7 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" as const, alignItems: "center" }}>
             <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>Popular:</span>
-            {[["🔥 El Clasico", null], ["🏆 UCL Final: Madrid", "/league/champions-league"], ["⚡ Man Derby", null]].map(([h, path]) => (
+            {[["🔥 El Clasico", "/league/laliga"], ["🏆 UCL Final: Madrid", "/league/champions-league"], ["⚡ Man Derby", "/league/premier-league"]].map(([h, path]) => (
               <div key={h as string} onClick={() => path && router.push(path)} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 999, padding: "4px 12px", fontSize: 11, color: "rgba(255,255,255,0.6)", cursor: path ? "pointer" : "default" }}>{h}</div>
             ))}
           </div>
